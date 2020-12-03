@@ -18,8 +18,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Final Project',
       // initialRoute: SplashView.id,
-      // initialRoute: OnBoardingView.id,
-      initialRoute: UserSignInView.id,
+      initialRoute: OnBoardingView.id,
+      // initialRoute: UserSignInView.id,
       routes: {
         SplashView.id: (context) => SplashView(),
         OnBoardingView.id: (context) => OnBoardingView(),
