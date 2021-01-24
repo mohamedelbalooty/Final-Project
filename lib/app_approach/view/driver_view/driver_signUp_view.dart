@@ -1,123 +1,148 @@
 import 'package:flutter/material.dart';
 
+import 'package:final_project/constants.dart';
+
+import 'package:final_project/widgets/shared_view_widgets/customBackground.dart';
+import 'package:final_project/widgets/shared_view_widgets/customAuthenticationQuestion.dart';
+
+import 'driver_signIn_view.dart';
+
 class DriverSignUpView extends StatelessWidget {
   static String id = 'DriverSignUpView';
-  final name = TextEditingController();
-  final phone = TextEditingController();
-  final email = TextEditingController();
-  final password = TextEditingController();
-  final carNum = TextEditingController();
+
+  final _name = TextEditingController();
+  final _phone = TextEditingController();
+  final _email = TextEditingController();
+  final _password = TextEditingController();
+  final _carNum = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
+    double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
+    bool isPortrait =
+        MediaQuery.of(context).orientation == Orientation.portrait;
+
     return Scaffold(
-      backgroundColor: Color(0xFF012e67),
-      body: ListView(
-        children: [
-          ClipPath(
-            clipper: MyClipper(),
-            child: Container(
-              width: double.infinity,
-              height: 300,
-              padding: const EdgeInsets.all(20.0),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    Color(0xFF5d80b6),
-                    Color(0xFFcbc6c3),
+      backgroundColor: KMainColor,
+      body: SingleChildScrollView(
+        child: Container(
+          child: Column(
+            children: [
+              customBackground(isPortrait, height, width, 'Asset 2'),
+              SizedBox(height: 10),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 20.0),
+                child: Row(
+                  children: [
+                    Inputs(
+                      icon: Icons.account_box,
+                      inputType: 'Name',
+                      controllerType: _name,
+                      txtType: TextInputType.name,
+                    ),
+                    Inputs(
+                      icon: Icons.phone,
+                      inputType: 'Phone',
+                      controllerType: _phone,
+                      txtType: TextInputType.number,
+                    ),
                   ],
                 ),
-                image: DecorationImage(
-                  image: AssetImage('null'),
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 20.0),
+                child: Row(
+                  children: [
+                    //Inputs is a custom widget
+                    Inputs(
+                      icon: Icons.email,
+                      inputType: 'Email',
+                      controllerType: _email,
+                      txtType: TextInputType.emailAddress,
+                    ),
+                    Inputs(
+                      icon: Icons.lock_outline,
+                      inputType: 'Password',
+                      controllerType: _password,
+                      txtType: TextInputType.visiblePassword,
+                    ),
+                  ],
                 ),
               ),
-            ),
-          ),
-          Row(
-            children: [
-              Inputs(
-                icon: Icons.account_box,
-                inputType: 'Name',
-                controllerType: name,
-                txtType: TextInputType.name,
-              ),
-              Inputs(
-                icon: Icons.phone,
-                inputType: 'Phone',
-                controllerType: phone,
-                txtType: TextInputType.number,
-              ),
-            ],
-          ),
-          Row(
-            children: [
-              Inputs(
-                icon: Icons.email,
-                inputType: 'email',
-                controllerType: email,
-                txtType: TextInputType.emailAddress,
-              ),
-              Inputs(
-                icon: Icons.security,
-                inputType: 'Password',
-                controllerType: password,
-                txtType: TextInputType.visiblePassword,
-              ),
-            ],
-          ),
-          Inputs(
-            icon: Icons.car_rental,
-            inputType: 'Car Number',
-            controllerType: carNum,
-            txtType: TextInputType.number,
-          ),
-          //TODO: ADD photo and Licence
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: 30.0, vertical: 12.0),
-            height: 50,
-            color: Color(0xff0194fe),
-            child: RaisedButton(
-              onPressed: null,
-              child: Text(
-                "Sign Up",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 25.0,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ),
 
-          Container(
-            height: 30.0,
-            color: Colors.teal,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  "Already have an account?",
-                  style: TextStyle(color: Color(0xFFcbc6c3)),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 20.0),
+                child: Inputs(
+                  icon: Icons.car_rental,
+                  inputType: 'Car Number',
+                  controllerType: _carNum,
+                  txtType: TextInputType.number,
                 ),
-                FlatButton(
+              ),
+
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 80.0,
+                      width: MediaQuery.of(context).size.width * 0.433,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(color: Colors.grey, width: 2.0),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 10.0,
+                    ),
+                    Container(
+                      height: 80.0,
+                      width: MediaQuery.of(context).size.width * 0.43,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.0),
+                        border: Border.all(color: Colors.grey, width: 2.0),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              //SignUp Button
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.blue,
+                ),
+                margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+                height: 50,
+                width: MediaQuery.of(context).size.width * 0.8,
+                child: RaisedButton(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                   onPressed: null,
                   child: Text(
-                    'Sign In',
+                    "Sign Up",
                     style: TextStyle(
-                      color: Color(0xff012b7e),
+                      color: Colors.white,
+                      fontSize: 25.0,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
-                )
-              ],
-            ),
-          )
-        ],
+                ),
+              ),
+
+              customAuthenticationQuestion(context, 'Already have an account ?',
+                  'Login', DriverSignInView.id)
+            ],
+          ),
+        ),
       ),
     );
   }
 }
 
-//TextField
 class Inputs extends StatelessWidget {
   final TextInputType txtType;
   final IconData icon;
@@ -130,15 +155,19 @@ class Inputs extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
-        margin: EdgeInsets.symmetric(horizontal: 9.0, vertical: 5.0),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5),
+        ),
+        margin: EdgeInsets.symmetric(horizontal: 5.0, vertical: 8.0),
         child: TextField(
+          style: TextStyle(color: Colors.white),
           keyboardType: txtType,
-          style: TextStyle(
-            color: Colors.white,
-          ),
           decoration: InputDecoration(
-            border: OutlineInputBorder(
-              borderSide: const BorderSide(color: Colors.grey, width: 0.0),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.grey, width: 2.0),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: const BorderSide(color: Colors.grey, width: 2.0),
             ),
             prefixIcon: Icon(
               icon,
@@ -149,25 +178,8 @@ class Inputs extends StatelessWidget {
                 TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
           ),
           controller: controllerType,
-          onSubmitted: (_) => null,
         ),
       ),
     );
   }
-}
-
-//header decoration
-class MyClipper extends CustomClipper<Path> {
-  @override
-  Path getClip(Size size) {
-    Path path = Path();
-    path.lineTo(0, size.height - 80);
-    path.quadraticBezierTo(
-        size.width / 2, size.height, size.width, size.height - 80);
-    path.lineTo(size.width, 0);
-    return path;
-  }
-
-  @override
-  bool shouldReclip(oldClipper) => false;
 }

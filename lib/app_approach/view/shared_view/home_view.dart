@@ -11,14 +11,14 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-   /* double height = MediaQuery.of(context).size.height;
+    /* double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     bool isPortrait =
         MediaQuery.of(context).orientation == Orientation.portrait;*/
     return Scaffold(
       body: Center(
         child: Container(
-          color:  KMainColor,
+          color: KMainColor,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -51,7 +51,7 @@ class HomeView extends StatelessWidget {
                     top: 25,
                     child: buildHomeCircle(
                       size: 100,
-                      color:  KMainColor,
+                      color: KMainColor,
                     ),
                   ),
                   Positioned(
