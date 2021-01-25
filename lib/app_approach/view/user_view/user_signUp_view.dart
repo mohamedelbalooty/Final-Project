@@ -4,6 +4,7 @@ import 'package:final_project/widgets/shared_view_widgets/customAuthenticationQu
 import 'package:final_project/widgets/shared_view_widgets/customBackground.dart';
 import 'package:final_project/widgets/shared_view_widgets/customLogo.dart';
 import 'package:final_project/widgets/shared_view_widgets/customTextField.dart';
+import 'package:final_project/widgets/shared_view_widgets/customWallpaper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:toast/toast.dart';
@@ -23,67 +24,72 @@ class UserSignUpView extends StatelessWidget {
     double width = MediaQuery.of(context).size.width;
     bool isPortrait =
         MediaQuery.of(context).orientation == Orientation.portrait;
-    return Scaffold(
-      backgroundColor: KMainColor,
-      body: Form(
-        key: _globalKey,
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              customBackground(isPortrait, height, width, 'Asset 5'),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    customLogo(),
-                    customAddingImageButton(() {
-                      //TODO ADDING IMAGE URL
-                    }),
-                  ],
-                ),
+    return Stack(
+      children: [
+        customWallpaper(height, width),
+        Scaffold(
+          backgroundColor: Colors.transparent,
+          body: Form(
+            key: _globalKey,
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  customBackground(isPortrait, height, width, 'Asset 5'),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        customLogo(),
+                        customAddingImageButton(() {
+                          //TODO ADDING IMAGE URL
+                        }),
+                      ],
+                    ),
+                  ),
+                  CustomTextField(
+                    label: 'Name',
+                    icon: Icons.person_outline,
+                    onClick: (String value) {
+                      _name = value;
+                    },
+                  ),
+                  CustomTextField(
+                    label: 'Email',
+                    icon: Icons.email_outlined,
+                    onClick: (String value) {
+                      _email = value;
+                    },
+                  ),
+                  CustomTextField(
+                    label: 'Phone',
+                    icon: Icons.phone,
+                    onClick: (String value) {
+                      _phone = value;
+                    },
+                  ),
+                  CustomTextField(
+                    label: 'Password',
+                    icon: Icons.lock_outline,
+                    onClick: (String value) {
+                      _password = value;
+                    },
+                  ),
+                  InkWell(
+                    onTap: () {
+                      _validate(context);
+                    },
+                    child: customAuthenticationButton(width, 'Sign Up', [KGradientColor, Colors.deepOrangeAccent]),
+                  ),
+                  customAuthenticationQuestion(context, 'Already have an account ?',
+                      'Login', UserSignInView.id),
+                ],
               ),
-              CustomTextField(
-                label: 'Name',
-                icon: Icons.person_outline,
-                onClick: (String value) {
-                  _name = value;
-                },
-              ),
-              CustomTextField(
-                label: 'Email',
-                icon: Icons.email_outlined,
-                onClick: (String value) {
-                  _email = value;
-                },
-              ),
-              CustomTextField(
-                label: 'Phone',
-                icon: Icons.phone,
-                onClick: (String value) {
-                  _phone = value;
-                },
-              ),
-              CustomTextField(
-                label: 'Password',
-                icon: Icons.lock_outline,
-                onClick: (String value) {
-                  _password = value;
-                },
-              ),
-              InkWell(
-                onTap: () {
-                  _validate(context);
-                },
-                child: customAuthenticationButton(width, 'Sign Up'),
-              ),
-              customAuthenticationQuestion(context, 'Already have an account ?',
-                  'Login', UserSignInView.id),
-            ],
+            ),
           ),
         ),
-      ),
+      ],
     );
   }
 

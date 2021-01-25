@@ -1,40 +1,46 @@
+import 'package:final_project/constants.dart';
 import 'package:flutter/material.dart';
-//Style
-final kTitleStyle = TextStyle(color: Colors.black, fontSize: 25.0, height: 1.2,fontWeight: FontWeight.bold);
-final kSubtitleStyle = TextStyle(color: Colors.grey, fontSize: 15.0, height: 1,);
 
-
-Widget buildOnboardDescription({ BuildContext context,String img, String title, String description, }) {
-
+Widget buildOnboardDescription({
+  BuildContext context,
+  String img,
+  String title,
+  String description,
+}) {
   return Padding(
-    padding: EdgeInsets.all(40.0),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Image.asset(img,width: 200,height: 200,),
-        /*Center(
-          child: Container(
-            height:  isPortrait ? height * 0.36 : height * 0.6,
-            width: width/2-10,
-            decoration: BoxDecoration(
-              image:DecorationImage(
-                image: AssetImage(img,),
-                fit: BoxFit.fill,
-              ),
+    padding: EdgeInsets.all(10.0),
+    child: SizedBox(
+      width: MediaQuery.of(context).size.width,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 40.0),
+            child: Image.asset(
+              img,
+              width: 300,
+              height: 300,
             ),
           ),
-        ),*/
-        SizedBox(height: 50.0),
-        Text(
-          title,
-          style: kTitleStyle,
-        ),
-        SizedBox(height: 10.0),
-        Text(
-          description,
-          style: kSubtitleStyle,
-        ),
-      ],
+
+          Text(
+            title,
+            textAlign: TextAlign.start,
+            style: TextStyle(
+              height: 1.2,
+              color: Colors.deepOrangeAccent,
+              fontSize: 28.0,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          SizedBox(height: 10.0),
+          Text(
+            description,
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Colors.white, fontSize: 17.0, height: 1.1),
+          ),
+        ],
+      ),
     ),
   );
 }

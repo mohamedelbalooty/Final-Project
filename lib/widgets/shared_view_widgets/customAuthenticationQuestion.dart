@@ -22,12 +22,12 @@ Widget customAuthenticationQuestion(
         ),
         InkWell(
           onTap: () {
-            Navigator.pushNamed(context, screen);
+            Navigator.pushReplacementNamed(context, screen);
           },
           child: Text(
             title,
             style: TextStyle(
-              color: KWhiteColor,
+              color: Colors.deepOrangeAccent,
               fontSize: 15.0,
               fontWeight: FontWeight.w500,
             ),

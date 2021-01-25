@@ -4,6 +4,7 @@ import 'package:final_project/widgets/shared_view_widgets/customAuthenticationQu
 import 'package:final_project/widgets/shared_view_widgets/customBackground.dart';
 import 'package:final_project/widgets/shared_view_widgets/customLogo.dart';
 import 'package:final_project/widgets/shared_view_widgets/customTextField.dart';
+import 'package:final_project/widgets/shared_view_widgets/customWallpaper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -26,46 +27,51 @@ class UserSignInView extends StatelessWidget {
     double width = MediaQuery.of(context).size.width;
     bool isPortrait =
         MediaQuery.of(context).orientation == Orientation.portrait;
-    return Scaffold(
-      backgroundColor: KMainColor,
-      body: Form(
-        key: _globalKey,
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              customBackground(isPortrait, height, width, 'Asset 4'),
-              _distance,
-              customLogo(),
-              _distance,
-              CustomTextField(
-                label: 'Email',
-                icon: Icons.email_outlined,
-                onClick: (String value) {
-                  _email = value;
-                },
+    return Stack(
+      children: [
+        customWallpaper(height, width),
+        Scaffold(
+          backgroundColor: Colors.transparent,
+          body: Form(
+            key: _globalKey,
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  customBackground(isPortrait, height, width, 'Asset 4'),
+                  _distance,
+                  customLogo(),
+                  _distance,
+                  CustomTextField(
+                    label: 'Email',
+                    icon: Icons.email_outlined,
+                    onClick: (String value) {
+                      _email = value;
+                    },
+                  ),
+                  _distance,
+                  CustomTextField(
+                    label: 'Password',
+                    icon: Icons.lock_outline,
+                    onClick: (String value) {
+                      _password = value;
+                    },
+                  ),
+                  _distance,
+                  InkWell(
+                    onTap: () {
+                      _validate(context);
+                    },
+                    child: customAuthenticationButton(width, 'Sign In', [KGradientColor, Colors.deepOrangeAccent]),
+                  ),
+                  customAuthenticationQuestion(context, 'Don\'t have an account ?',
+                      'Register', UserSignUpView.id),
+                ],
               ),
-              _distance,
-              CustomTextField(
-                label: 'Password',
-                icon: Icons.lock_outline,
-                onClick: (String value) {
-                  _password = value;
-                },
-              ),
-              _distance,
-              InkWell(
-                onTap: () {
-                  _validate(context);
-                },
-                child: customAuthenticationButton(width, 'Sign In'),
-              ),
-              customAuthenticationQuestion(context, 'Don\'t have an account ?',
-                  'Register', UserSignUpView.id),
-            ],
+            ),
           ),
         ),
-      ),
+      ],
     );
   }
 

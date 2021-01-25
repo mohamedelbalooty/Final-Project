@@ -31,13 +31,12 @@ class _SplashViewState extends State<SplashView> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Image.asset('assets/images/photos/logo.png', width: 165, height: 165,),
-            // SizedBox(height: 5,),
+            Image.asset('assets/images/photos/logo.png', width: 160, height: 160,),
+            SizedBox(height: 5,),
             Text('Tawseela', style: TextStyle(
                 color: Colors.deepOrange,
-                fontSize: 26,
+                fontSize: 28,
                 fontWeight: FontWeight.w900,
-                fontFamily: 'HachiMaruPop-Regular'
             ),)
           ],
         ),
@@ -45,12 +44,3 @@ class _SplashViewState extends State<SplashView> {
     );
   }
 }
-/*
- @override
-  void initState() {
-    Timer(Duration(seconds: 5), (){
-      Navigator.pushReplacementNamed(context, 'OnBoardingView');}
-    );
-    super.initState();
-  }
- */
