@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'app_approach/view/driver_view/driver_home_navigation.dart';
-import 'app_approach/view/driver_view/driver_home_view.dart';
 import 'app_approach/view/driver_view/driver_notification_view.dart';
 import 'app_approach/view/driver_view/driver_profile_view.dart';
 import 'app_approach/view/driver_view/driver_signIn_view.dart';

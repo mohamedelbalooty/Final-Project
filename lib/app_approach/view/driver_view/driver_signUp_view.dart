@@ -77,7 +77,7 @@ class DriverSignUpView extends StatelessWidget {
                   Container(
                     margin: EdgeInsets.symmetric(horizontal: 20.0),
                     child: Inputs(
-                      icon: Icons.car_rental,
+                      icon: Icons.drive_eta,
                       inputType: 'Car Number',
                       controllerType: _carNum,
                       txtType: TextInputType.number,
@@ -123,6 +123,9 @@ class DriverSignUpView extends StatelessWidget {
                       },
                       child: customAuthenticationButton(width, 'Sign Up',
                           [Colors.deepOrangeAccent, KGradientColor])),
+
+                  customAuthenticationButton(width, 'Sign Up',
+                      [Colors.deepOrangeAccent, KGradientColor]),
                   customAuthenticationQuestion(context,
                       'Already have an account ?', 'Login', DriverSignInView.id)
                 ],
