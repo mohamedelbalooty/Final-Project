@@ -49,6 +49,11 @@ class DriverSignInView extends StatelessWidget {
                   'Sign In',
                   [Colors.deepOrangeAccent, KGradientColor],
                 ),
+                customAuthenticationQuestion(
+                    context,
+                    'Don\'t have an account ?',
+                    'Sign In',
+                    DriverProfileView.id),
                 customAuthenticationQuestion(context,
                     'Don\'t have an account ?', 'Register', DriverSignUpView.id)
               ],

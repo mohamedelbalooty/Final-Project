@@ -38,22 +38,44 @@ class DriverProfileView extends StatelessWidget {
                   fontWeight: FontWeight.w400),
             ),
             SizedBox(
-              height: 70,
+              height: 50,
             ),
-            DriverInfo(
-              icon: Icons.email,
-              info: 'driver@gmail.com',
-            ),
-            SizedBox(height: 20.0),
-            DriverInfo(
-              icon: Icons.phone,
-              info: '+20101625628',
-            ),
-            SizedBox(height: 20.0),
-            DriverInfo(
-              icon: Icons.car_rental,
-              info: '8596',
-            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Column(
+                  children: [
+                    Icon(Icons.email, color: Colors.blue, size: 25.0),
+                    SizedBox(height: 26.0),
+                    Icon(Icons.phone, color: Colors.blue, size: 25.0),
+                    SizedBox(height: 26.0),
+                    Icon(Icons.drive_eta, color: Colors.blue, size: 25.0)
+                  ],
+                ),
+                SizedBox(
+                  width: 25.0,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'driver@gmail.com',
+                      style: TextStyle(color: Colors.blue, fontSize: 20.0),
+                    ),
+                    SizedBox(height: 18.0),
+                    Text(
+                      '+2010151859649',
+                      style: TextStyle(color: Colors.blue, fontSize: 20.0),
+                    ),
+                    SizedBox(height: 18.0),
+                    Text(
+                      '5899',
+                      style: TextStyle(color: Colors.blue, fontSize: 20.0),
+                    )
+                  ],
+                )
+              ],
+            )
           ],
         ),
       ),

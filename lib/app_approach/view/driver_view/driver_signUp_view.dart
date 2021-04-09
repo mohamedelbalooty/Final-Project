@@ -79,7 +79,7 @@ class DriverSignUpView extends StatelessWidget {
                   Container(
                     margin: EdgeInsets.symmetric(horizontal: 20.0),
                     child: Inputs(
-                      icon: Icons.car_rental,
+                      icon: Icons.drive_eta,
                       inputType: 'Car Number',
                       controllerType: _carNum,
                       txtType: TextInputType.number,
@@ -87,7 +87,8 @@ class DriverSignUpView extends StatelessWidget {
                   ),
 
                   Container(
-                    margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                    margin:
+                        EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -96,7 +97,8 @@ class DriverSignUpView extends StatelessWidget {
                             height: 80.0,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
-                              border: Border.all(color: KOrangeColor, width: 1.5),
+                              border:
+                                  Border.all(color: KOrangeColor, width: 1.5),
                             ),
                           ),
                         ),
@@ -108,7 +110,8 @@ class DriverSignUpView extends StatelessWidget {
                             height: 80.0,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10.0),
-                              border: Border.all(color: KOrangeColor, width: 1.5),
+                              border:
+                                  Border.all(color: KOrangeColor, width: 1.5),
                             ),
                           ),
                         ),
@@ -116,9 +119,10 @@ class DriverSignUpView extends StatelessWidget {
                     ),
                   ),
                   //SignUp Button
-                  customAuthenticationButton(width, 'Sign Up', [Colors.deepOrangeAccent, KGradientColor]),
-                  customAuthenticationQuestion(context, 'Already have an account ?',
-                      'Login', DriverSignInView.id)
+                  customAuthenticationButton(width, 'Sign Up',
+                      [Colors.deepOrangeAccent, KGradientColor]),
+                  customAuthenticationQuestion(context,
+                      'Already have an account ?', 'Login', DriverSignInView.id)
                 ],
               ),
             ),
