@@ -1,9 +1,9 @@
-import 'package:final_project/app_approach/view/driver_view/driver_signUp_view.dart';
-import 'package:final_project/app_approach/view/user_view/user_signUp_view.dart';
+import 'package:final_project/app_approach/view/driver_view/driver_signIn_view.dart';
+import 'package:final_project/app_approach/view/user_view/user_signIn_view.dart';
 import 'package:final_project/widgets/shared_view_widgets/customHomeButton.dart';
-import 'package:final_project/widgets/shared_view_widgets/customHomeCircle.dart';
+import 'package:final_project/widgets/shared_view_widgets/customWallpaper.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import '../../../constants.dart';
 
 class HomeView extends StatelessWidget {
@@ -11,93 +11,74 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    /* double height = MediaQuery.of(context).size.height;
+    double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     bool isPortrait =
-        MediaQuery.of(context).orientation == Orientation.portrait;*/
-    return Scaffold(
-      body: Center(
-        child: Container(
-          color: KMainColor,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.2,
-              ),
-              Text(
-                'MR',
-                style: TextStyle(fontSize: 50, color: KWhiteColor),
-              ),
-              Text(
-                'Connect and disvery our',
-                style: TextStyle(color: KWhiteColor),
-              ),
-              Text(
-                'awesome UI Kit',
-                style: TextStyle(color: KWhiteColor),
-              ),
-              SizedBox(
-                height: 50,
-              ),
-              Stack(
-                children: [
-                  buildHomeCircle(
-                    size: 150,
-                    color: KSecondColor,
-                  ),
-                  Positioned(
-                    left: 25,
-                    top: 25,
-                    child: buildHomeCircle(
-                      size: 100,
-                      color: KMainColor,
-                    ),
-                  ),
-                  Positioned(
-                      left: 55,
-                      top: 55,
-                      child: Icon(
-                        Icons.close,
-                        color: KWhiteColor,
-                        size: 40,
-                      )),
-                ],
-              ),
-              SizedBox(
-                height: 50,
-              ),
-              Text(
-                  'Lorem ipsum dolor sit amet,consect adipiscing\nsed do eiusmod tempor incididunt ut labore etc.',
-                  style: TextStyle(color: KWhiteColor)),
-              SizedBox(
-                height: 50,
-              ),
-              Row(
+        MediaQuery.of(context).orientation == Orientation.portrait;
+    return Stack(
+      children: [
+        customWallpaper(height, width),
+        Scaffold(
+          backgroundColor: Colors.transparent,
+          body: SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.symmetric(
+                  horizontal: isPortrait ? 10.0 : 30.0,
+                  vertical: isPortrait ? 30 : 0.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  buildHomeButton(
-                      title: 'Driver',
-                      titleColor: KWhiteColor,
-                      buttonColor: KSecondColor,
-                      borderColor: KSecondColor,
-                      context: context,
-                      nextScreen: DriverSignUpView()),
-                  SizedBox(
-                    width: 15,
+                  Container(
+                    height: isPortrait ? height * 0.6 : height * 1.5,
+                    width: width,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Hero(child: Image.asset('assets/images/photos/Asset 7.png'), tag: 'Asset',),
+                        SizedBox(height: 20.0),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                          child: Text(
+                            'Welcome to in Tawseela App system',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: KWhiteColor,
+                              fontSize: 26.0,
+                              fontWeight: FontWeight.bold,
+                              height: 1.4,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                  buildHomeButton(
-                      title: 'User',
-                      titleColor: KWhiteColor,
-                      borderColor: KWhiteColor,
-                      context: context,
-                      nextScreen: UserSignUpView()),
+                  Container(
+                    height: isPortrait ? height * 0.3 : height * 0.4,
+                    width: width,
+                    margin: const EdgeInsets.symmetric(horizontal: 10.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        buildHomeButton(
+                            title: 'Driver',
+                            buttonColor: [Colors.deepOrangeAccent, KGradientColor],
+                            context: context,
+                            nextScreen: DriverSignInView()),
+                        buildHomeButton(
+                            title: 'User',
+                            buttonColor: [KGradientColor, Colors.deepOrangeAccent],
+                            context: context,
+                            nextScreen: UserSignInView()),
+                      ],
+                    ),
+                  ),
                 ],
-              )
-            ],
+              ),
+            ),
           ),
         ),
-      ),
+      ],
     );
   }
 }

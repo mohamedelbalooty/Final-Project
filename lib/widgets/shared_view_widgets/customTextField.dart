@@ -42,7 +42,7 @@ class CustomTextField extends StatelessWidget {
             return _errorMessage(label);
           }
         },
-        cursorColor: KBorderColor,
+        cursorColor: KOrangeColor,
         style: TextStyle(
           color: KWhiteColor,
           fontSize: 16.0,
@@ -50,16 +50,16 @@ class CustomTextField extends StatelessWidget {
         ),
         obscureText: label == 'Password' ? true : false,
         decoration: InputDecoration(
-          contentPadding: EdgeInsets.symmetric(vertical: 5.0),
+          contentPadding: EdgeInsets.symmetric(vertical: 10.0),
           labelText: label,
           labelStyle: TextStyle(
-            color: KBorderColor,
+            color: KOrangeColor,
             fontSize: 16.0,
             fontWeight: FontWeight.w500,
           ),
           prefixIcon: Icon(
             icon,
-            color: KBorderColor,
+            color: KOrangeColor,
           ),
           enabledBorder: _customBorder(),
           focusedBorder: _customBorder(),
@@ -72,10 +72,10 @@ class CustomTextField extends StatelessWidget {
 
   OutlineInputBorder _customBorder() {
     return OutlineInputBorder(
-      borderRadius: BorderRadius.circular(30.0),
+      borderRadius: BorderRadius.circular(8.0),
       borderSide: BorderSide(
-        color: KBorderColor,
-        width: 2.0,
+        color: KOrangeColor,
+        width: 1.5,
       ),
     );
   }

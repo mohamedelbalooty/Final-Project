@@ -1,4 +1,7 @@
 import 'package:final_project/app_approach/view/driver_view/driver_profile_view.dart';
+
+import 'package:final_project/widgets/shared_view_widgets/customAuthenticationButton.dart';
+import 'package:final_project/widgets/shared_view_widgets/customWallpaper.dart';
 import 'package:flutter/material.dart';
 
 import 'package:final_project/constants.dart';
@@ -17,59 +20,42 @@ class DriverSignInView extends StatelessWidget {
     double width = MediaQuery.of(context).size.width;
     bool isPortrait =
         MediaQuery.of(context).orientation == Orientation.portrait;
-    return Scaffold(
-      backgroundColor: KMainColor,
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            customBackground(isPortrait, height, width, 'Asset 5'),
-            SizedBox(
-              height: height * 0.2,
-            ),
-            Inputs(
-              icon: Icons.email,
-              inputType: 'Email',
-              controllerType: email,
-              txtType: TextInputType.emailAddress,
-            ),
-            Inputs(
-              icon: Icons.lock_outline,
-              inputType: 'Password',
-              controllerType: password,
-              txtType: TextInputType.visiblePassword,
-            ),
-            Container(
-              width: width * 0.73,
-              height: 50,
-              margin: EdgeInsets.symmetric(vertical: 10.0),
-              decoration: BoxDecoration(
-                color: Color(0xff0194fe),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: RaisedButton(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
+    return Stack(
+      children: [
+        customWallpaper(height, width),
+        Scaffold(
+          backgroundColor: KMainColor,
+          body: SingleChildScrollView(
+            child: Column(
+              children: [
+                customBackground(isPortrait, height, width, 'Asset 8'),
+                SizedBox(
+                  height: height * 0.09,
                 ),
-                onPressed: () =>
-                    Navigator.pushNamed(context, DriverProfileView.id),
-                child: Text(
-                  "Sign In",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 25.0,
-                    fontWeight: FontWeight.bold,
-                  ),
+                Inputs(
+                  icon: Icons.email,
+                  inputType: 'Email',
+                  controllerType: email,
+                  txtType: TextInputType.emailAddress,
                 ),
-              ),
+                Inputs(
+                  icon: Icons.lock_outline,
+                  inputType: 'Password',
+                  controllerType: password,
+                  txtType: TextInputType.visiblePassword,
+                ),
+                customAuthenticationButton(
+                  width,
+                  'Sign In',
+                  [Colors.deepOrangeAccent, KGradientColor],
+                ),
+                customAuthenticationQuestion(context,
+                    'Don\'t have an account ?', 'Register', DriverSignUpView.id)
+              ],
             ),
-            SizedBox(
-              height: 35,
-            ),
-            customAuthenticationQuestion(context, 'Don\'t have an account ?',
-                'Register', DriverSignUpView.id)
-          ],
+          ),
         ),
-      ),
+      ],
     );
   }
 }
@@ -86,26 +72,28 @@ class Inputs extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 30.0, vertical: 10.0),
+      height: 50.0,
+      width: MediaQuery.of(context).size.width,
+      margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
       child: TextField(
         keyboardType: txtType,
         style: TextStyle(
-          color: Colors.white,
+          color: KOrangeColor,
         ),
         decoration: InputDecoration(
           focusedBorder: OutlineInputBorder(
-            borderSide: const BorderSide(color: Colors.grey),
+            borderSide: const BorderSide(color: KOrangeColor, width: 1.5),
           ),
           enabledBorder: OutlineInputBorder(
-            borderSide: const BorderSide(color: Colors.grey, width: 2.0),
+            borderSide: const BorderSide(color: KOrangeColor, width: 1.5),
           ),
           prefixIcon: Icon(
             icon,
-            color: Color(0xffdcdfe4),
+            color: KOrangeColor,
           ),
           labelText: '$inputType',
           labelStyle:
-              TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              TextStyle(color: KOrangeColor, fontWeight: FontWeight.bold),
         ),
         controller: controllerType,
         onSubmitted: (_) => null,

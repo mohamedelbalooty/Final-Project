@@ -17,7 +17,7 @@ Widget customAddingImageButton(Function onClick){
                   'assets/images/icons/empty.jpg'),
               fit: BoxFit.fill,
             ),
-            border: Border.all(color: KBorderColor, width: 1.5,),
+            border: Border.all(color: KOrangeColor, width: 1.5,),
             shape: BoxShape.circle,
           ),
         ),
@@ -31,12 +31,12 @@ Widget customAddingImageButton(Function onClick){
             decoration: BoxDecoration(
               color: KWhiteColor,
               shape: BoxShape.circle,
-              border: Border.all(color: KBorderColor, width: 1.0),
+              border: Border.all(color: KOrangeColor, width: 1.5),
             ),
             child: Center(
               child: Icon(
                 Icons.add,
-                color: KBorderColor,
+                color: KSecondColor,
               ),
             ),
           ),
