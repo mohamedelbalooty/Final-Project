@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Final Project',
-       initialRoute: SplashView.id,
+      initialRoute: SplashView.id,
       //initialRoute: OnBoardingView.id,
       // initialRoute: UserSignInView.id,
       routes: {

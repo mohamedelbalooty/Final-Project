@@ -1,3 +1,4 @@
+import 'package:final_project/app_approach/view/driver_view/driver_profile_view.dart';
 import 'package:flutter/material.dart';
 
 import 'package:final_project/constants.dart';
@@ -49,7 +50,8 @@ class DriverSignInView extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
-                onPressed: null,
+                onPressed: () =>
+                    Navigator.pushNamed(context, DriverProfileView.id),
                 child: Text(
                   "Sign In",
                   style: TextStyle(
