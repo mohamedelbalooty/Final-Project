@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'app_approach/view/driver_view/driver_home_navigation.dart';
+import 'app_approach/view/driver_view/driver_home_view.dart';
+import 'app_approach/view/driver_view/driver_notification_view.dart';
 import 'app_approach/view/driver_view/driver_profile_view.dart';
 import 'app_approach/view/driver_view/driver_signIn_view.dart';
 import 'app_approach/view/driver_view/driver_signUp_view.dart';
@@ -28,13 +31,15 @@ class MyApp extends StatelessWidget {
       routes: {
         SplashView.id: (context) => SplashView(),
         OnBoardingView.id: (context) => OnBoardingView(),
-        HomeView.id: (context) => HomeView(),
+        HomeViewShared.id: (context) => HomeViewShared(),
         UserSignInView.id: (context) => UserSignInView(),
         UserSignUpView.id: (context) => UserSignUpView(),
         UserProfileView.id: (context) => UserProfileView(),
         DriverSignInView.id: (context) => DriverSignInView(),
         DriverSignUpView.id: (context) => DriverSignUpView(),
         DriverProfileView.id: (context) => DriverProfileView(),
+        DriverHomeNavigation.id:(context) => DriverHomeNavigation(),
+        DriverNotificationView.id: (context) => DriverNotificationView(),
       },
     );
   }

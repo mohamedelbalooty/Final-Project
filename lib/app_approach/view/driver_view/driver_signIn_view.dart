@@ -1,5 +1,3 @@
-import 'package:final_project/app_approach/view/driver_view/driver_profile_view.dart';
-
 import 'package:final_project/widgets/shared_view_widgets/customAuthenticationButton.dart';
 import 'package:final_project/widgets/shared_view_widgets/customWallpaper.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:final_project/constants.dart';
 import 'package:final_project/widgets/shared_view_widgets/customBackground.dart';
 import 'package:final_project/widgets/shared_view_widgets/customAuthenticationQuestion.dart';
+import 'driver_home_navigation.dart';
+import 'driver_home_view.dart';
 import 'driver_signUp_view.dart';
 
 class DriverSignInView extends StatelessWidget {
@@ -44,10 +44,15 @@ class DriverSignInView extends StatelessWidget {
                   controllerType: password,
                   txtType: TextInputType.visiblePassword,
                 ),
-                customAuthenticationButton(
-                  width,
-                  'Sign In',
-                  [Colors.deepOrangeAccent, KGradientColor],
+                InkWell(
+                  onTap: (){
+                    Navigator.pushNamed(context, DriverHomeNavigation.id);
+                  },
+                  child: customAuthenticationButton(
+                    width,
+                    'Sign In',
+                    [Colors.deepOrangeAccent, KGradientColor],
+                  ),
                 ),
                 customAuthenticationQuestion(context,
                     'Don\'t have an account ?', 'Register', DriverSignUpView.id)

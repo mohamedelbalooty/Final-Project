@@ -23,6 +23,9 @@ dependencies:
   toast: ^0.1.5
   image_picker: ^0.6.6+1
   shared_preferences: ^0.5.7+3
+  flutter_custom_clippers: ^1.1.2
+  custom_bottom_navigation_bar: ^0.0.1
+  curved_navigation_bar: ^0.3.4
 
 dev_dependencies:
   flutter_test:

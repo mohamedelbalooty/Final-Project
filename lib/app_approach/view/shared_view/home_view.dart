@@ -6,8 +6,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../../constants.dart';
 
-class HomeView extends StatelessWidget {
-  static String id = 'HomeView';
+class HomeViewShared extends StatelessWidget {
+  static String id = 'HomeViewShared';
 
   @override
   Widget build(BuildContext context) {

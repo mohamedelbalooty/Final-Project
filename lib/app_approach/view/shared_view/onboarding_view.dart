@@ -1,3 +1,4 @@
+import 'package:final_project/app_approach/view/shared_view/home_view.dart';
 import 'package:final_project/constants.dart';
 import 'package:final_project/widgets/shared_view_widgets/customOnBoardingButton.dart';
 import 'package:final_project/widgets/shared_view_widgets/customOnBoardingDescription.dart';
@@ -21,20 +22,29 @@ class _OnBoardingViewState extends State<OnBoardingView> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
+        height: MediaQuery
+            .of(context)
+            .size
+            .height,
+        width: MediaQuery
+            .of(context)
+            .size
+            .width,
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [KMainColor, KGradientColor],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight
+              colors: [KMainColor, KGradientColor],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight
           ),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Container(
-              height: MediaQuery.of(context).size.height * 0.81,
+              height: MediaQuery
+                  .of(context)
+                  .size
+                  .height * 0.81,
               child: PageView(
                 physics: ClampingScrollPhysics(),
                 controller: _pageController,
@@ -49,21 +59,21 @@ class _OnBoardingViewState extends State<OnBoardingView> {
                     img: 'assets/images/photos/Asset 1.png',
                     title: "Let's get Started",
                     description:
-                        'Lorem ipsum dolor sit amet, consect adipiscing elit, sed do eiusmod tempor incididunt ut labore.',
+                    'Lorem ipsum dolor sit amet, consect adipiscing elit, sed do eiusmod tempor incididunt ut labore.',
                   ),
                   buildOnboardDescription(
                     context: context,
                     img: 'assets/images/photos/Asset 2.png',
                     title: 'Taxi Driver Talking',
                     description:
-                        'Lorem ipsum dolor sit amet, consect adipiscing elit, sed do eiusmod tempor incididunt ut labore.',
+                    'Lorem ipsum dolor sit amet, consect adipiscing elit, sed do eiusmod tempor incididunt ut labore.',
                   ),
                   buildOnboardDescription(
                     context: context,
                     img: 'assets/images/photos/Asset 3.png',
                     title: 'Make a Success',
                     description:
-                        'Lorem ipsum dolor sit amet, consect adipiscing elit, sed do eiusmod tempor incididunt ut labore.',
+                    'Lorem ipsum dolor sit amet, consect adipiscing elit, sed do eiusmod tempor incididunt ut labore.',
                   ),
                 ],
               ),
@@ -96,41 +106,42 @@ class _OnBoardingViewState extends State<OnBoardingView> {
                     children: [
                       _currentPage != 0
                           ? InkWell(
-                              onTap: () {
-                                _pageController.previousPage(
-                                  duration: Duration(milliseconds: 500),
-                                  curve: Curves.ease,
-                                );
-                              },
-                              child: buildOnboardButton(
-                                  icon: Icons.arrow_back,
-                                  iconColor: KMainColor,
-                                  buttonColor: Colors.deepOrangeAccent))
+                          onTap: () {
+                            _pageController.previousPage(
+                              duration: Duration(milliseconds: 500),
+                              curve: Curves.ease,
+                            );
+                          },
+                          child: buildOnboardButton(
+                              icon: Icons.arrow_back,
+                              iconColor: KMainColor,
+                              buttonColor: Colors.deepOrangeAccent))
                           : Text(''),
                       SizedBox(
                         width: 5,
                       ),
                       _currentPage != _numPages - 1
                           ? InkWell(
-                              onTap: () {
-                                _pageController.nextPage(
-                                  duration: Duration(milliseconds: 500),
-                                  curve: Curves.ease,
-                                );
-                              },
-                              child: buildOnboardButton(
-                                  icon: Icons.arrow_forward,
-                                  iconColor: KOrangeColor,
-                                  buttonColor: KMainColor))
+                          onTap: () {
+                            _pageController.nextPage(
+                              duration: Duration(milliseconds: 500),
+                              curve: Curves.ease,
+                            );
+                          },
+                          child: buildOnboardButton(
+                              icon: Icons.arrow_forward,
+                              iconColor: KOrangeColor,
+                              buttonColor: KMainColor))
                           : InkWell(
-                              onTap: () {
-                                Navigator.pushReplacementNamed(
-                                    context, 'HomeView');
-                              },
-                              child: buildOnboardButton(
-                                  icon: Icons.done,
-                                  iconColor: KOrangeColor,
-                                  buttonColor: KMainColor)),
+                          onTap: () {
+                            Navigator.pushReplacement(
+                                context, MaterialPageRoute(
+                                builder: (context) => HomeViewShared()));
+                          },
+                          child: buildOnboardButton(
+                              icon: Icons.done,
+                              iconColor: KOrangeColor,
+                              buttonColor: KMainColor)),
                       SizedBox(
                         width: 5,
                       ),

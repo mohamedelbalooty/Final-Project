@@ -1,12 +1,10 @@
 import 'package:final_project/widgets/shared_view_widgets/customAuthenticationButton.dart';
 import 'package:final_project/widgets/shared_view_widgets/customWallpaper.dart';
 import 'package:flutter/material.dart';
-
 import 'package:final_project/constants.dart';
-
 import 'package:final_project/widgets/shared_view_widgets/customBackground.dart';
 import 'package:final_project/widgets/shared_view_widgets/customAuthenticationQuestion.dart';
-
+import 'driver_home_navigation.dart';
 import 'driver_signIn_view.dart';
 
 class DriverSignUpView extends StatelessWidget {
@@ -87,7 +85,8 @@ class DriverSignUpView extends StatelessWidget {
                   ),
 
                   Container(
-                    margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                    margin:
+                        EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -96,7 +95,8 @@ class DriverSignUpView extends StatelessWidget {
                             height: 80.0,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
-                              border: Border.all(color: KOrangeColor, width: 1.5),
+                              border:
+                                  Border.all(color: KOrangeColor, width: 1.5),
                             ),
                           ),
                         ),
@@ -108,7 +108,8 @@ class DriverSignUpView extends StatelessWidget {
                             height: 80.0,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10.0),
-                              border: Border.all(color: KOrangeColor, width: 1.5),
+                              border:
+                                  Border.all(color: KOrangeColor, width: 1.5),
                             ),
                           ),
                         ),
@@ -116,9 +117,14 @@ class DriverSignUpView extends StatelessWidget {
                     ),
                   ),
                   //SignUp Button
-                  customAuthenticationButton(width, 'Sign Up', [Colors.deepOrangeAccent, KGradientColor]),
-                  customAuthenticationQuestion(context, 'Already have an account ?',
-                      'Login', DriverSignInView.id)
+                  InkWell(
+                      onTap: () {
+                        Navigator.pushNamed(context, DriverHomeNavigation.id);
+                      },
+                      child: customAuthenticationButton(width, 'Sign Up',
+                          [Colors.deepOrangeAccent, KGradientColor])),
+                  customAuthenticationQuestion(context,
+                      'Already have an account ?', 'Login', DriverSignInView.id)
                 ],
               ),
             ),
