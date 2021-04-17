@@ -25,7 +25,8 @@ class DriverProfileView extends StatelessWidget {
                     height: 280,
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                        image: AssetImage("assets/images/photos/background.jpg"),
+                        image:
+                            AssetImage("assets/images/photos/background.jpg"),
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -43,9 +44,8 @@ class DriverProfileView extends StatelessWidget {
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       image: DecorationImage(
-                        image: AssetImage("assets/images/photos/driver.jpg"),
-                        fit: BoxFit.fill
-                      ),
+                          image: AssetImage("assets/images/photos/driver.jpg"),
+                          fit: BoxFit.fill),
                     ),
                   ),
                 ),
@@ -61,21 +61,7 @@ class DriverProfileView extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: 50
-            ),
-            DriverInfo(
-              icon: Icons.email,
-              info: 'driver@gmail.com',
-            ),
-            SizedBox(height: 20.0),
-            DriverInfo(
-              icon: Icons.phone,
-              info: '+20101625628',
-            ),
-            SizedBox(height: 20.0),
-            DriverInfo(
-              icon: Icons.car_rental,
-              info: '8596',
+              height: 50,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,

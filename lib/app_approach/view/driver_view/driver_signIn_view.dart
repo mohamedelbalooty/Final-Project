@@ -44,7 +44,7 @@ class DriverSignInView extends StatelessWidget {
                   txtType: TextInputType.visiblePassword,
                 ),
                 InkWell(
-                  onTap: (){
+                  onTap: () {
                     Navigator.pushNamed(context, DriverHomeNavigation.id);
                   },
                   child: customAuthenticationButton(
@@ -53,11 +53,6 @@ class DriverSignInView extends StatelessWidget {
                     [Colors.deepOrangeAccent, KGradientColor],
                   ),
                 ),
-                customAuthenticationQuestion(
-                    context,
-                    'Don\'t have an account ?',
-                    'Sign In',
-                    DriverProfileView.id),
                 customAuthenticationQuestion(context,
                     'Don\'t have an account ?', 'Register', DriverSignUpView.id)
               ],
