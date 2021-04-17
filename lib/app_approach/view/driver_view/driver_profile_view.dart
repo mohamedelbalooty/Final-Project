@@ -12,6 +12,56 @@ class DriverProfileView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: Drawer(
+        child: Column(
+          children: [
+            Stack(
+              alignment: Alignment.bottomCenter,
+              children: [
+                ClipPath(
+                  clipper: WaveClipperOne(),
+                  child: Container(
+                    width: double.infinity,
+                    height: 200,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image:
+                            AssetImage("assets/images/photos/background.jpg"),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                ),
+                Container(
+                  height: 130,
+                  width: 130,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Container(
+                    margin: EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                          image: AssetImage("assets/images/photos/driver.jpg"),
+                          fit: BoxFit.fill),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 60),
+            DrawerInfo(icon: Icons.settings, txt: "Settings"),
+            SizedBox(height: 20.0),
+            DrawerInfo(icon: Icons.language, txt: "Language"),
+            SizedBox(height: 20.0),
+            DrawerInfo(icon: Icons.info, txt: "About"),
+            SizedBox(height: 60),
+            DrawerInfo(icon: Icons.logout, txt: "Sign Out")
+          ],
+        ),
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -165,6 +215,34 @@ class DriverInfo extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class DrawerInfo extends StatelessWidget {
+  final IconData icon;
+  final String txt;
+  DrawerInfo({this.icon, this.txt});
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        SizedBox(width: 30.0),
+        Icon(
+          icon,
+          color: Colors.grey,
+          size: 25,
+        ),
+        SizedBox(width: 25.0),
+        Text(
+          txt,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 20.0,
+            color: Colors.grey,
+          ),
+        ),
+      ],
     );
   }
 }
