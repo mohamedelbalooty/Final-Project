@@ -13,7 +13,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
+  google_maps_flutter: ^1.0.5
 
   cupertino_icons: ^1.0.0
   smooth_page_indicator: ^0.2.0
@@ -30,6 +30,9 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  pedantic: ^1.11.0
+  build_runner: ^1.10.0
+  
 
 flutter:
 

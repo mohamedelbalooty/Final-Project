@@ -58,7 +58,7 @@ class DriverProfileView extends StatelessWidget {
             SizedBox(height: 20.0),
             DrawerInfo(icon: Icons.info, txt: "About"),
             SizedBox(height: 60),
-            DrawerInfo(icon: Icons.logout, txt: "Sign Out")
+            DrawerInfo(icon: Icons.logout, txt: "Sign Out"),
           ],
         ),
       ),
