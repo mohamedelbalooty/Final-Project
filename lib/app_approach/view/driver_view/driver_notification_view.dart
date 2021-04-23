@@ -1,59 +1,87 @@
+import 'package:final_project/constants.dart';
 import 'package:flutter/material.dart';
 
-class DriverNotificationView extends StatelessWidget {
+class DriverNotificationView extends StatefulWidget {
   static String id = 'DriverNotificationView';
+
+  @override
+  _DriverNotificationViewState createState() => _DriverNotificationViewState();
+}
+
+class _DriverNotificationViewState extends State<DriverNotificationView> {
+  int currentIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 3,
       child: Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          centerTitle: true,
-          title: Text('DriverNotificationView'),
-          bottom: TabBar(
-            tabs: [
-              Tab(
-                child: Text("Pending", style: TextStyle(fontSize: 19.0)),
+        body: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.only(top: 30, bottom: 5),
+              child: TabBar(
+                isScrollable: false,
+                indicatorColor: KOrangeColor,
+                onTap: (index) {
+                  setState(() {
+                    currentIndex = index;
+                  });
+                },
+                tabs: [
+                  _customTap(currentIndex, 0, 'Pending'),
+                  _customTap(currentIndex, 1, 'Rejected'),
+                  _customTap(currentIndex, 2, 'Accepted'),
+                ],
               ),
-              Tab(
-                child: Text("Accepted", style: TextStyle(fontSize: 19.0)),
-              ),
-              Tab(child: Text("Rejected", style: TextStyle(fontSize: 19.0))),
-            ],
-          ),
-        ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(
-                height: 20,
-              ),
-              Customer(
-                imageUrl: "assets/images/photos/person.jpg",
-                name: "Smith Mark",
-              ),
-              SizedBox(height: 10.0),
-              Customer(
-                imageUrl: "assets/images/photos/person1.jpg",
-                name: "Ryan Jones",
-              ),
-              SizedBox(height: 10.0),
-              Customer(
-                imageUrl: "assets/images/photos/person2.jpg",
-                name: "Locus Nicukas",
-              ),
-            ],
-          ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Expanded(
+              child: ListView.builder(
+                  itemCount: 5,
+                  itemBuilder: (context, index) {
+                    return Customer(
+                      imageUrl: "assets/images/photos/person.jpg",
+                      name: "Smith Mark",
+                    );
+                  }),
+            ),
+          ],
         ),
       ),
     );
   }
 }
 
+Widget _customTap(currentIndex, index, title) {
+  return Tab(
+    child: Container(
+      height: 55,
+      width: 100,
+      margin: EdgeInsets.symmetric(vertical: 2),
+      decoration: BoxDecoration(
+        color: KGradientColor,
+        borderRadius: BorderRadius.circular(5),
+      ),
+      child: Center(
+        child: Text(
+          title,
+          style: TextStyle(
+              fontSize: 19.0,
+              color: currentIndex == index ? KOrangeColor : KWhiteColor),
+        ),
+      ),
+    ),
+  );
+}
+
 class Customer extends StatelessWidget {
   final String imageUrl, name;
+
   Customer({this.imageUrl, this.name});
+
   @override
   Widget build(BuildContext context) {
     return Column(

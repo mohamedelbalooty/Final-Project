@@ -20,7 +20,6 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Final Project',
       initialRoute: SplashView.id,
-
       theme: ThemeData(
         fontFamily: 'BalooTamma2',
       ),
