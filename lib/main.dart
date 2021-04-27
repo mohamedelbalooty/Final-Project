@@ -1,3 +1,4 @@
+import 'package:final_project/constants.dart';
 import 'package:flutter/material.dart';
 import 'app_approach/view/driver_view/driver_home_navigation.dart';
 import 'app_approach/view/driver_view/driver_notification_view.dart';
@@ -6,6 +7,9 @@ import 'app_approach/view/driver_view/driver_signIn_view.dart';
 import 'app_approach/view/driver_view/driver_signUp_view.dart';
 import 'app_approach/view/shared_view/home_view.dart';
 import 'app_approach/view/shared_view/onboarding_view.dart';
+import 'app_approach/view/user_view/user_home_navigation.dart';
+import 'app_approach/view/user_view/user_home_view.dart';
+import 'app_approach/view/user_view/user_payment_view.dart';
 import 'app_approach/view/user_view/user_profile_view.dart';
 import 'app_approach/view/user_view/user_signIn_view.dart';
 import 'app_approach/view/user_view/user_signUp_view.dart';
@@ -19,11 +23,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Final Project',
-      initialRoute: SplashView.id,
+      initialRoute: UserHomeNavigation.id,
       theme: ThemeData(
         fontFamily: 'BalooTamma2',
+        primarySwatch: Colors.indigo,
       ),
-
       //initialRoute: OnBoardingView.id,
       // initialRoute: UserSignInView.id,
       routes: {
@@ -36,8 +40,11 @@ class MyApp extends StatelessWidget {
         DriverSignInView.id: (context) => DriverSignInView(),
         DriverSignUpView.id: (context) => DriverSignUpView(),
         DriverProfileView.id: (context) => DriverProfileView(),
-        DriverHomeNavigation.id:(context) => DriverHomeNavigation(),
+        DriverHomeNavigation.id: (context) => DriverHomeNavigation(),
         DriverNotificationView.id: (context) => DriverNotificationView(),
+        UserHomeNavigation.id: (context) => UserHomeNavigation(),
+        UserHomeView.id: (context) => UserHomeView(),
+        UserPaymentView.id: (context) => UserPaymentView(),
       },
     );
   }
