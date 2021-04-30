@@ -1,8 +1,14 @@
+import 'package:final_project/app_approach/model/driver_model.dart';
 import 'package:final_project/app_approach/view/user_view/user_payment_view.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../constants.dart';
+import 'driversBottomSheet.dart';
 
-Future billingShowDialog(double height, BuildContext context) {
+Future billingShowDialog(double height, double width, BuildContext context, LatLng currentLatlng, LatLng destinationLatlng) {
+  var _driversDataList = DriversData().drivers;
+
   return showDialog(
       context: context,
       builder: (context) {
@@ -15,8 +21,6 @@ Future billingShowDialog(double height, BuildContext context) {
                 Container(
                   height: 200,
                   decoration: BoxDecoration(
-//                            borderRadius: BorderRadius.circular(15),
-//                            border: Border.all(color: KGradientColor),
                     image: DecorationImage(
                       image:
                           ExactAssetImage('assets/images/photos/Asset 9.png'),
@@ -40,14 +44,22 @@ Future billingShowDialog(double height, BuildContext context) {
                   children: [
                     _customShowDialogButton(KOrangeColor, 'Cash', () {
                       Navigator.of(context).pop();
+                      driversBottomSheet(
+                          context, height, _driversDataList, width, currentLatlng, destinationLatlng);
                     }),
                     SizedBox(
                       width: 10.0,
                     ),
-                    _customShowDialogButton(
-                        KGradientColor, 'Add billing', () {
+                    _customShowDialogButton(KGradientColor, 'Add billing', () {
                       Navigator.of(context).pop();
-                      Navigator.pushNamed(context, UserPaymentView.id);
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            content: UserPaymentView(),
+                          );
+                        },
+                      );
                     }),
                   ],
                 ),

@@ -32,6 +32,7 @@ dependencies:
   dio: any
   flutter_polyline_points: any
   geolocator: ^5.3.2+2
+  modal_bottom_sheet: ^2.0.0
 
 dev_dependencies:
   flutter_test:

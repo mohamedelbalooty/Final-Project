@@ -9,6 +9,7 @@ import 'app_approach/view/shared_view/home_view.dart';
 import 'app_approach/view/shared_view/onboarding_view.dart';
 import 'app_approach/view/user_view/user_home_navigation.dart';
 import 'app_approach/view/user_view/user_home_view.dart';
+import 'app_approach/view/user_view/user_onTrip_view.dart';
 import 'app_approach/view/user_view/user_payment_view.dart';
 import 'app_approach/view/user_view/user_profile_view.dart';
 import 'app_approach/view/user_view/user_signIn_view.dart';
@@ -45,6 +46,7 @@ class MyApp extends StatelessWidget {
         UserHomeNavigation.id: (context) => UserHomeNavigation(),
         UserHomeView.id: (context) => UserHomeView(),
         UserPaymentView.id: (context) => UserPaymentView(),
+        UserOnTripView.id: (context) => UserOnTripView(),
       },
     );
   }

@@ -1,5 +1,6 @@
 import 'dart:collection';
 import 'package:final_project/constants.dart';
+import 'package:final_project/widgets/user_view_widgets/alertShowDialog.dart';
 import 'package:final_project/widgets/user_view_widgets/billingShowDialog.dart';
 import 'package:final_project/widgets/user_view_widgets/destinationDetails.dart';
 import 'package:flutter/material.dart';
@@ -27,16 +28,18 @@ class _UserHomeViewState extends State<UserHomeView> {
 
   String _currentAddress = '';
   String _destinationAddress = '';
-  double _latitude, _longitude;
+  LatLng currentLatLng;
+  LatLng destinationLatLng;
+//  double _latitude, _longitude;
   bool _isLoading = false;
   bool _onClick = false;
-  var _markers = HashSet<Marker>();
-  LatLng _initialcameraposition = LatLng(20.5937, 78.9629);
+  final _markers = HashSet<Marker>();
+  final LatLng _initialCameraPosition = LatLng(20.5937, 78.9629);
   GoogleMapController _controller;
-  Location _location = Location();
+  final Location _location = Location();
 
   Future _getAddress(latitude, longitude) async {
-    List<Placemark> placeMark =
+    var placeMark =
         await Geolocator().placemarkFromCoordinates(latitude, longitude);
     setState(() {
       _currentAddress =
@@ -44,19 +47,23 @@ class _UserHomeViewState extends State<UserHomeView> {
     });
   }
 
+  double _zoomValue = 18.0;
+
   void _onMapCreated(GoogleMapController _control) async {
     _controller = _control;
     _location.onLocationChanged.listen((l) async {
-      _controller.animateCamera(
+      await _controller.animateCamera(
         CameraUpdate.newCameraPosition(
-          CameraPosition(target: LatLng(l.latitude, l.longitude), zoom: 18),
+          CameraPosition(
+              target: LatLng(l.latitude, l.longitude), zoom: _zoomValue),
         ),
       );
       setState(() {
-        _latitude = l.latitude;
-        _longitude = l.longitude;
+        currentLatLng = LatLng(l.latitude, l.longitude);
+//        _latitude = l.latitude;
+//        _longitude = l.longitude;
       });
-      _getAddress(l.latitude, l.longitude);
+      await _getAddress(l.latitude, l.longitude);
       setState(() {
         _markers.add(
           Marker(
@@ -113,19 +120,8 @@ class _UserHomeViewState extends State<UserHomeView> {
                     child: Stack(
                       children: [
                         GoogleMap(
-                          onTap: (LatLng currentLatLng) {
-                            setState(() {
-                              _markers.add(
-                                Marker(
-                                  markerId: MarkerId('id'),
-                                  position: LatLng(currentLatLng.latitude,
-                                      currentLatLng.longitude),
-                                ),
-                              );
-                            });
-                          },
-                          onLongPress: (LatLng currentLatLng) async {
-                            List<Placemark> placeMark = await Geolocator()
+                          onTap: (LatLng currentLatLng) async {
+                            var placeMark = await Geolocator()
                                 .placemarkFromCoordinates(
                                     currentLatLng.latitude,
                                     currentLatLng.longitude);
@@ -137,13 +133,15 @@ class _UserHomeViewState extends State<UserHomeView> {
                                       currentLatLng.longitude),
                                 ),
                               );
+                              destinationLatLng = currentLatLng;
                               _destinationAddress =
                                   '${placeMark[0].country} ${placeMark[0].administrativeArea} ${placeMark[0].locality}';
+                              _zoomValue = 10.0;
                             });
                           },
                           markers: _markers,
                           initialCameraPosition:
-                              CameraPosition(target: _initialcameraposition),
+                              CameraPosition(target: _initialCameraPosition),
                           mapType: MapType.normal,
                           onMapCreated: _onMapCreated,
                           buildingsEnabled: true,
@@ -181,10 +179,10 @@ class _UserHomeViewState extends State<UserHomeView> {
       child: Column(
         children: [
           destinationDetails(height, width, 'From ', _currentAddress,
-              Icons.add_location_outlined, Colors.red),
+              Icons.location_on_outlined, Colors.green),
           _onClick
               ? destinationDetails(height, width, 'To ', _destinationAddress,
-                  Icons.add_location_alt_outlined, Colors.green)
+                  Icons.add_location_alt_outlined, Colors.red)
               : Container(),
         ],
       ),
@@ -199,14 +197,13 @@ class _UserHomeViewState extends State<UserHomeView> {
       child: InkWell(
         onTap: () {
           if (_onClick != true && _destinationAddress == '') {
-            Toast.show('Please Enter your destination', context,
-                duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM,);
+            alertShowDialog(width, context);
           } else if (_onClick != true && _destinationAddress != '') {
             setState(() {
               _onClick = true;
             });
           } else if (_onClick == true && _destinationAddress != '') {
-            billingShowDialog(height, context);
+            billingShowDialog(height, width, context, currentLatLng, destinationLatLng);
           }
         },
         child: Container(
