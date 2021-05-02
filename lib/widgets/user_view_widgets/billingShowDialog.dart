@@ -6,7 +6,14 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../constants.dart';
 import 'driversBottomSheet.dart';
 
-Future billingShowDialog(double height, double width, BuildContext context, LatLng currentLatlng, LatLng destinationLatlng) {
+Future billingShowDialog(
+    double height,
+    double width,
+    BuildContext context,
+    LatLng currentLatlng,
+    LatLng destinationLatlng,
+    String currentAddress,
+    String destinationAddress) {
   var _driversDataList = DriversData().drivers;
 
   return showDialog(
@@ -45,7 +52,14 @@ Future billingShowDialog(double height, double width, BuildContext context, LatL
                     _customShowDialogButton(KOrangeColor, 'Cash', () {
                       Navigator.of(context).pop();
                       driversBottomSheet(
-                          context, height, _driversDataList, width, currentLatlng, destinationLatlng);
+                          context,
+                          height,
+                          _driversDataList,
+                          width,
+                          currentLatlng,
+                          destinationLatlng,
+                          currentAddress,
+                          destinationAddress);
                     }),
                     SizedBox(
                       width: 10.0,

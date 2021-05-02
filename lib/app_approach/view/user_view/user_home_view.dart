@@ -30,6 +30,7 @@ class _UserHomeViewState extends State<UserHomeView> {
   String _destinationAddress = '';
   LatLng currentLatLng;
   LatLng destinationLatLng;
+
 //  double _latitude, _longitude;
   bool _isLoading = false;
   bool _onClick = false;
@@ -203,7 +204,8 @@ class _UserHomeViewState extends State<UserHomeView> {
               _onClick = true;
             });
           } else if (_onClick == true && _destinationAddress != '') {
-            billingShowDialog(height, width, context, currentLatLng, destinationLatLng);
+            billingShowDialog(height, width, context, currentLatLng,
+                destinationLatLng, _currentAddress, _destinationAddress);
           }
         },
         child: Container(

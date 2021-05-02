@@ -5,62 +5,89 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import '../../constants.dart';
 
-Future driversBottomSheet(BuildContext context, double height,
-    List<DriverModel> _driversDataList, double width, LatLng currentLatlng, LatLng destinationLatlng) {
+Future driversBottomSheet(
+    BuildContext context,
+    double height,
+    List<DriverModel> _driversDataList,
+    double width,
+    LatLng currentLatlng,
+    LatLng destinationLatlng,
+    String currentAddress,
+    String destinationAddress) {
   return showMaterialModalBottomSheet(
     useRootNavigator: true,
-    backgroundColor: KGradientColor,
+//    backgroundColor: KGradientColor,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.only(
-        topLeft: Radius.circular(10.0),
-        topRight: Radius.circular(10.0),
+        topLeft: Radius.circular(20.0),
+        topRight: Radius.circular(20.0),
       ),
     ),
     context: context,
-    builder: (context) => SingleChildScrollView(
-      controller: ModalScrollController.of(context),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          Container(
-            height: 28,
-            width: 28,
-            margin: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: Colors.blueGrey.shade200,
-              shape: BoxShape.circle,
+    builder: (context) => Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      child: SingleChildScrollView(
+        controller: ModalScrollController.of(context),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            InkWell(
+              onTap: () => Navigator.pop(context),
+              child: Icon(
+                Icons.keyboard_arrow_down,
+                color: Colors.grey,
+                size: 30,
+              ),
             ),
-            child: Center(
-              child: InkWell(
-                onTap: () => Navigator.pop(context),
-                child: Icon(
-                  Icons.close,
-                  color: Colors.blueGrey.shade700,
+//            Container(
+//              height: 28,
+//              width: 28,
+//              margin: const EdgeInsets.all(10),
+//              decoration: BoxDecoration(
+//                color: Colors.blueGrey.shade200,
+//                shape: BoxShape.circle,
+//              ),
+//              child: Center(
+//                child:
+//              ),
+//            ),
+            SizedBox(
+              height: height * 0.4,
+              child: MediaQuery.removePadding(
+                context: context,
+                removeTop: true,
+                child: ListView.builder(
+                  itemCount: _driversDataList.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return _listItem(
+                        context,
+                        width,
+                        _driversDataList,
+                        index,
+                        currentLatlng,
+                        destinationLatlng,
+                        currentAddress,
+                        destinationAddress);
+                  },
                 ),
               ),
             ),
-          ),
-          SizedBox(
-            height: height * 0.4,
-            child: MediaQuery.removePadding(
-              context: context,
-              removeTop: true,
-              child: ListView.builder(
-                itemCount: _driversDataList.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return _listItem(context, width, _driversDataList, index, currentLatlng, destinationLatlng);
-                },
-              ),
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     ),
   );
 }
 
-InkWell _listItem(context, double width, List<DriverModel> _driversDataList,
-    int index, LatLng currentLatlng, LatLng destinationLatlng) {
+InkWell _listItem(
+    context,
+    double width,
+    List<DriverModel> _driversDataList,
+    int index,
+    LatLng currentLatlng,
+    LatLng destinationLatlng,
+    String currentAddress,
+    String destinationAddress) {
   return InkWell(
     onTap: () {
       Navigator.push(
@@ -69,6 +96,9 @@ InkWell _listItem(context, double width, List<DriverModel> _driversDataList,
           builder: (context) => UserOnTripView(
             current: currentLatlng,
             destination: destinationLatlng,
+            currentAddress: currentAddress,
+            destinationAddress: destinationAddress,
+            currentDriver: _driversDataList[index],
           ),
         ),
       );
@@ -78,7 +108,7 @@ InkWell _listItem(context, double width, List<DriverModel> _driversDataList,
       width: width,
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
             color: Colors.black26,

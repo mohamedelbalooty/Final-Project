@@ -22,7 +22,7 @@ class DriversData{
         id: 1,
         name: 'Mohamed',
         image:
-        'https://lesjours.fr/ressources/res480/square/people/pierre-person.jpeg',
+        'https://cdn3.vectorstock.com/i/1000x1000/91/32/young-man-cartoon-vector-17299132.jpg',
         phoneNumber: 01111111234,
         price: 4,
         rating: '⭐⭐⭐⭐'),
@@ -30,7 +30,7 @@ class DriversData{
         id: 2,
         name: 'Gamal',
         image:
-        'https://content.fortune.com/wp-content/uploads/2018/07/gettyimages-961697338.jpg?resize=750,500',
+        'https://cdn3.vectorstock.com/i/1000x1000/63/42/young-man-face-cartoon-vector-19116342.jpg',
         phoneNumber: 01111112345,
         price: 5,
         rating: '⭐⭐⭐⭐⭐'),
@@ -38,7 +38,7 @@ class DriversData{
         id: 3,
         name: 'Mahmoud',
         image:
-        'https://inglam.ru/img/2020/06/terry-crews-2018-sundance-film-festival-portraits-002-152x200.jpg',
+        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTBfaLpucJ-ZxchbI-sbTjRmuZquahlul7Bsraf9tnTPopHNjggT3E_diP02nZgPEYjgEo&usqp=CAU',
         phoneNumber: 01111123456,
         price: 3,
         rating: '⭐⭐'),
@@ -46,23 +46,7 @@ class DriversData{
         id: 4,
         name: 'Elbalooty',
         image:
-        'https://www.diethelmtravel.com/wp-content/uploads/2016/04/bill-gates-wealthiest-person.jpg',
-        phoneNumber: 01111234567,
-        price: 2.5,
-        rating: '⭐⭐⭐'),
-    DriverModel(
-        id: 4,
-        name: 'Elbalooty',
-        image:
-        'https://www.diethelmtravel.com/wp-content/uploads/2016/04/bill-gates-wealthiest-person.jpg',
-        phoneNumber: 01111234567,
-        price: 2.5,
-        rating: '⭐⭐⭐'),
-    DriverModel(
-        id: 4,
-        name: 'Elbalooty',
-        image:
-        'https://www.diethelmtravel.com/wp-content/uploads/2016/04/bill-gates-wealthiest-person.jpg',
+        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3UayzfjvoAG07UbS9G26kW4tjmHS1w4o144NoGIAAUXosn4d0jfUpo5yDyVXYR6KwqzM&usqp=CAU',
         phoneNumber: 01111234567,
         price: 2.5,
         rating: '⭐⭐⭐'),
