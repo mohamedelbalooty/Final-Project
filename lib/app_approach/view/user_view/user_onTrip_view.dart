@@ -1,9 +1,14 @@
 import 'package:final_project/app_approach/model/driver_model.dart';
+import 'package:final_project/app_approach/model/ride_model.dart';
 import 'package:final_project/constants.dart';
+import 'package:final_project/provider/addRides.dart';
 import 'package:final_project/widgets/user_view_widgets/custom_timeLine.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
+import 'package:provider/provider.dart';
+import 'package:toast/toast.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class UserOnTripView extends StatefulWidget {
   static const String id = 'UserOnTripView';
@@ -47,43 +52,9 @@ class _UserOnTripViewState extends State<UserOnTripView> {
 
   var default1 = LatLng(30.97063, 31.1669);
   var default2 = LatLng(31.037933, 31.381523);
-
-//  List<LatLng> _markerLocations = [
-//    default1,
-//    default2,
-//  ];
-//  var markers = [
-//    Marker(
-//      markerId: MarkerId('1'),
-//      position: widget.current,
-//    ),
-//    Marker(
-//      markerId: MarkerId('2'),
-//      position: LatLng(31.037933, 31.381523),
-////      icon: customMarker,
-//    ),
-//  ];
-//  BitmapDescriptor customMarker;
-  // ignore: always_declare_return_types
-//  createCustomMarker() async {
-//    customMarker = await BitmapDescriptor.fromAssetImage(
-//        ImageConfiguration.empty, 'assets/images/icons/driving_pin.png', );
-//  }
-
-////  List<Marker>
-//  var markers = [];
-//  createMarkers() {
-//    markers.add(
-//      Marker(
-//        markerId: MarkerId('1'),
-////        icon:
-//      ),
-//    );
-//  }
-
   List<Polyline> myPolyline = [];
 
-  createPolyline() {
+  void createPolyline() {
     myPolyline.add(
       Polyline(
         polylineId: PolylineId('1'),
@@ -98,10 +69,13 @@ class _UserOnTripViewState extends State<UserOnTripView> {
     );
   }
 
+  bool _isLoading = false;
+  bool _onGoing = false;
+
   @override
   void initState() {
     super.initState();
-//    createCustomMarker();
+    callMe();
     setState(() {
       default1 = widget.current;
       default2 = widget.destination;
@@ -109,7 +83,12 @@ class _UserOnTripViewState extends State<UserOnTripView> {
     createPolyline();
   }
 
-  bool checkBoxValue = false;
+  Future callMe() async {
+    await Future.delayed(Duration(seconds: 5));
+    setState(() {
+      _isLoading = true;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -117,19 +96,22 @@ class _UserOnTripViewState extends State<UserOnTripView> {
         MediaQuery.of(context).orientation == Orientation.portrait;
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
+
     return Scaffold(
-      body: Column(
-        children: [
-          _tripMap(height, width),
-          _tripCard(height, width),
-        ],
-      ),
+      body: _isLoading == false
+          ? Center(child: CircularProgressIndicator())
+          : Column(
+              children: [
+                _tripMap(height, width),
+                _tripCard(height, width, widget.currentDriver),
+              ],
+            ),
     );
   }
 
   Container _tripMap(double height, double width) {
     return Container(
-      height: height * 0.5,
+      height: height * 0.55,
       width: width,
       child: GoogleMap(
         polylines: myPolyline.toSet(),
@@ -151,9 +133,9 @@ class _UserOnTripViewState extends State<UserOnTripView> {
     );
   }
 
-  Container _tripCard(double height, double width) {
+  Container _tripCard(double height, double width, DriverModel driverInfo) {
     return Container(
-      height: height * 0.5,
+      height: height * 0.45,
       width: width,
       color: KWhiteColor,
       child: Expanded(
@@ -177,38 +159,49 @@ class _UserOnTripViewState extends State<UserOnTripView> {
           ),
           child: Column(
             children: [
-              _driverInfo(width),
-              customTimeLine(Colors.greenAccent.shade400,
-                  Icons.location_searching, widget.currentAddress, true, false),
-              customTimeLine(Colors.red, Icons.location_on_rounded,
-                  widget.destinationAddress, false, true),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: Image.asset(
-                        'assets/images/icons/staticCar.png',
+              _driverInfo(width, driverInfo),
+              Expanded(
+                child: customTimeLine(
+                    Colors.greenAccent.shade400,
+                    Icons.location_searching,
+                    widget.currentAddress,
+                    true,
+                    false),
+              ),
+              Expanded(
+                child: customTimeLine(Colors.red, Icons.location_on_rounded,
+                    widget.destinationAddress, false, true),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Image.asset(
+                          'assets/images/icons/staticCar.png',
+                        ),
                       ),
-                    ),
-                    Expanded(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          _tripInfo('Distance', '5 KM'),
-                          SizedBox(
-                            width: 15,
-                          ),
-                          _tripInfo('Price', '15 LE'),
-                        ],
+                      Expanded(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            _tripInfo('المسافة', '5 KM'),
+                            SizedBox(
+                              width: 15,
+                            ),
+                            _tripInfo('السعر', '${driverInfo.price} LE'),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-              Expanded(child: SizedBox()),
-              _goToTripButton(height),
+              Expanded(
+                child: _goToTripButton(height),
+              ),
             ],
           ),
         ),
@@ -243,85 +236,90 @@ class _UserOnTripViewState extends State<UserOnTripView> {
   InkWell _goToTripButton(double height) {
     return InkWell(
       onTap: () {
-        showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                content: Container(
-                  height: height * 0.42,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(
-                        height: 200,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image:
-                            ExactAssetImage('assets/images/icons/car.gif'),
-                            fit: BoxFit.fill,
-                          ),
-                        ),
-                      ),
-                      Text(
-                        'Share ride ?!',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.grey.shade700,
-                          fontSize: 16,
-                        ),
-                      ),
-                      Row(
-                        children: [
-                          _customShowDialogButton(KOrangeColor, 'Yes', () {
-//                            Navigator.of(context).pop();
-//                            driversBottomSheet(
-//                                context,
-//                                height,
-//                                _driversDataList,
-//                                width,
-//                                currentLatlng,
-//                                destinationLatlng,
-//                                currentAddress,
-//                                destinationAddress);
-                          }),
-                          SizedBox(
-                            width: 10.0,
-                          ),
-                          _customShowDialogButton(KGradientColor, 'No', () {
-//                            Navigator.of(context).pop();
-//                            showDialog(
-//                              context: context,
-//                              builder: (context) {
-//                                return AlertDialog(
-//                                  content: UserPaymentView(),
-//                                );
-//                              },
-//                            );
-                          }),
-                        ],
-                      ),
-                    ],
+        if (_onGoing != true) {
+          setState(() {
+            _onGoing = true;
+          });
+          showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
                   ),
-                ),
-              );
-            });
-
+                  content: Container(
+                    height: height * 0.42,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(
+                          height: 170,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: ExactAssetImage(
+                                  'assets/images/icons/car.gif'),
+                              fit: BoxFit.fill,
+                            ),
+                          ),
+                        ),
+                        Text(
+                          'هل تريد مشاركة الرحلة ؟!',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.grey.shade700,
+                            fontSize: 22,
+                            height: 1,
+                          ),
+                        ),
+                        Expanded(child: SizedBox()),
+                        Row(
+                          children: [
+                            _customShowDialogButton(
+                              KGradientColor,
+                              'لا',
+                              () => Navigator.pop(context),
+                            ),
+                            SizedBox(
+                              width: 10.0,
+                            ),
+                            _customShowDialogButton(KOrangeColor, 'نعم', () {
+                              Navigator.pop(context);
+                              Provider.of<AddRides>(context, listen: false)
+                                  .rideAdding(
+                                RideModel(
+                                  currentAddress: widget.currentAddress,
+                                  destinationAddress: widget.destinationAddress,
+                                  ridePrice: widget.currentDriver.price,
+                                ),
+                              );
+                              Provider.of<AddRides>(context, listen: false)
+                                  .addingRideChanged();
+                              Toast.show('تمت المشاركة بنجاح', context,
+                                  duration: Toast.LENGTH_LONG,
+                                  gravity: Toast.CENTER);
+                            }),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              });
+        }
       },
-      child: Flexible(
-        child: Container(
-          margin: EdgeInsets.fromLTRB(10, 0, 10, 10),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(5),
-            color: KGradientColor,
-          ),
-          child: Center(
-            child: Text(
-              'Go',
-              style: TextStyle(
-                color: KWhiteColor,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
+      child: Container(
+        margin: EdgeInsets.fromLTRB(10, 0, 10, 10),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5),
+          color: KGradientColor,
+        ),
+        child: Center(
+          child: Text(
+            _onGoing != true ? 'اذهب' : 'أنت في الرحلة حالياً',
+            style: TextStyle(
+              color: KWhiteColor,
+              fontSize: 17,
+              fontWeight: FontWeight.bold,
             ),
           ),
         ),
@@ -347,7 +345,7 @@ class _UserOnTripViewState extends State<UserOnTripView> {
     );
   }
 
-  Container _driverInfo(double width) {
+  Container _driverInfo(double width, DriverModel driverInfo) {
     return Container(
       height: 70,
       width: width,
@@ -403,8 +401,8 @@ class _UserOnTripViewState extends State<UserOnTripView> {
                 ],
               ),
               child: InkWell(
-                onTap: () {
-                  //TODO URL LANCHER
+                onTap: () async {
+                  await launch(('tel:${driverInfo.phoneNumber}'));
                 },
                 child: Icon(
                   Icons.phone,

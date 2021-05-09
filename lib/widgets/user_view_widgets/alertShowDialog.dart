@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../constants.dart';
 
-Future alertShowDialog(double width, BuildContext context) {
+Future alertShowDialog(double width, BuildContext context, String content) {
   return showDialog(
       context: context,
       builder: (context) {
@@ -17,14 +17,14 @@ Future alertShowDialog(double width, BuildContext context) {
                   size: 100,
                 ),
                 Text(
-                  'Warning !!!',
+                  'خطأ !!!',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 23,
                   ),
                 ),
                 Text(
-                  'Please detect your destination',
+                  content,
                   style: TextStyle(
                     fontSize: 18,
                     height: 1,
@@ -40,7 +40,7 @@ Future alertShowDialog(double width, BuildContext context) {
                     },
                     color: KGradientColor,
                     child: Text(
-                      'Okay',
+                      'تم',
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,

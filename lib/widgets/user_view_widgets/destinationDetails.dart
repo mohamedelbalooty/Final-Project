@@ -24,30 +24,24 @@ Container destinationDetails(
       ],
     ),
     child: Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15.0),
+      padding: const EdgeInsets.symmetric(horizontal: 5.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text(
-            title,
-            style: TextStyle(
-              color: Colors.grey.shade400,
-              fontWeight: FontWeight.bold,
-              fontSize: 19,
-            ),
-          ),
-          Text(
-            address,
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 16,
-            ),
-          ),
-          Expanded(child: SizedBox()),
           Icon(
             icon,
             color: color,
             size: 25,
+          ),
+          SizedBox(width: 5),
+          Text(
+            address,
+            softWrap: true,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 16,
+            ),
           ),
         ],
       ),

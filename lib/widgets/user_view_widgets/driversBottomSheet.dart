@@ -16,7 +16,6 @@ Future driversBottomSheet(
     String destinationAddress) {
   return showMaterialModalBottomSheet(
     useRootNavigator: true,
-//    backgroundColor: KGradientColor,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.only(
         topLeft: Radius.circular(20.0),
@@ -39,18 +38,6 @@ Future driversBottomSheet(
                 size: 30,
               ),
             ),
-//            Container(
-//              height: 28,
-//              width: 28,
-//              margin: const EdgeInsets.all(10),
-//              decoration: BoxDecoration(
-//                color: Colors.blueGrey.shade200,
-//                shape: BoxShape.circle,
-//              ),
-//              child: Center(
-//                child:
-//              ),
-//            ),
             SizedBox(
               height: height * 0.4,
               child: MediaQuery.removePadding(

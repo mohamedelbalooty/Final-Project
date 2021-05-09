@@ -3,6 +3,7 @@ import 'package:final_project/app_approach/view/driver_view/driver_notification_
 import 'package:final_project/app_approach/view/user_view/user_home_view.dart';
 import 'package:flutter/material.dart';
 import 'user_profile_view.dart';
+import 'user_sharing_rides.dart';
 
 class UserHomeNavigation extends StatefulWidget {
   static String id = 'UserHomeNavigation';
@@ -16,7 +17,7 @@ class _UserHomeNavigationState extends State<UserHomeNavigation> {
 
   final List<Widget> _screens = [
     UserHomeView(),
-    UserProfileView(),
+    UserSharingRides(),
     DriverNotificationView(),
   ];
 
@@ -44,8 +45,11 @@ class _UserHomeNavigationState extends State<UserHomeNavigation> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: customPageView(), bottomNavigationBar: _customBottomNavyBar());
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Scaffold(
+          body: customPageView(), bottomNavigationBar: _customBottomNavyBar()),
+    );
   }
 
   PageView customPageView() {
@@ -65,24 +69,24 @@ class _UserHomeNavigationState extends State<UserHomeNavigation> {
         BottomNavyBarItem(
           icon: Icon(
               _currentIndex == 0 ? Icons.home : Icons.water_damage_outlined),
-          title: Text('Home'),
+          title: Center(child: Text('الرئيسية')),
           activeColor: Colors.red,
         ),
         BottomNavyBarItem(
             icon: Icon(_currentIndex == 1
                 ? Icons.directions
                 : Icons.directions_outlined),
-            title: Text('Rides'),
+            title: Center(child: Text('الطرق المشتركة', style: TextStyle(fontSize: 11),)),
             activeColor: Colors.green),
         BottomNavyBarItem(
             icon: Icon(_currentIndex == 2 ? Icons.help : Icons.help_outline),
-            title: Text('Help'),
+            title: Center(child: Text('المساعد الذكي', style: TextStyle(fontSize: 12),)),
             activeColor: Colors.orange),
-        BottomNavyBarItem(
-            icon:
-                Icon(_currentIndex == 3 ? Icons.person : Icons.person_outline),
-            title: Text('Settings'),
-            activeColor: Colors.indigoAccent),
+//        BottomNavyBarItem(
+//            icon:
+//                Icon(_currentIndex == 3 ? Icons.person : Icons.person_outline),
+//            title: Text('الملف الشخصي', style: TextStyle(fontSize: 11),),
+//            activeColor: Colors.indigoAccent),
       ],
     );
   }

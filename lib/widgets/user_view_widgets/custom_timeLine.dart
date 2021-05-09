@@ -22,7 +22,7 @@ TimelineTile customTimeLine(
         minHeight: 50,
       ),
       child: Padding(
-        padding: EdgeInsets.only(left: 5, top: 10),
+        padding: EdgeInsets.only(left: 3, top: 14, right: 3),
         child: Flexible(
           child: Text(
             contentAddress,
@@ -31,7 +31,7 @@ TimelineTile customTimeLine(
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
               color: KBlackColor,
-              fontSize: 20,
+              fontSize: 16,
             ),
           ),
         ),

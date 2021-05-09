@@ -1,5 +1,6 @@
 import 'dart:collection';
 import 'package:final_project/constants.dart';
+import 'package:final_project/provider/addRides.dart';
 import 'package:final_project/widgets/user_view_widgets/alertShowDialog.dart';
 import 'package:final_project/widgets/user_view_widgets/billingShowDialog.dart';
 import 'package:final_project/widgets/user_view_widgets/destinationDetails.dart';
@@ -7,7 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
-import 'package:toast/toast.dart';
+import 'package:provider/provider.dart';
+
 
 class UserHomeView extends StatefulWidget {
   static String id = 'UserHomeView';
@@ -30,10 +32,7 @@ class _UserHomeViewState extends State<UserHomeView> {
   String _destinationAddress = '';
   LatLng currentLatLng;
   LatLng destinationLatLng;
-
-//  double _latitude, _longitude;
   bool _isLoading = false;
-  bool _onClick = false;
   final _markers = HashSet<Marker>();
   final LatLng _initialCameraPosition = LatLng(20.5937, 78.9629);
   GoogleMapController _controller;
@@ -89,19 +88,21 @@ class _UserHomeViewState extends State<UserHomeView> {
     callMe();
   }
 
+  bool onClick = false;
   @override
   Widget build(BuildContext context) {
     bool isPortrait =
         MediaQuery.of(context).orientation == Orientation.portrait;
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
+//    final onClickProvider = Provider.of<OnClick>(context);
     return Scaffold(
       drawer: Drawer(),
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: KGradientColor,
         title: Text(
-          'Tawsela Home',
+          'توصيلة هوم',
           style: TextStyle(
             color: Colors.white,
             fontSize: 22,
@@ -163,7 +164,7 @@ class _UserHomeViewState extends State<UserHomeView> {
 
   Container _customMapDetails(double height, double width) {
     return Container(
-      height: _onClick != true ? height * 0.1 : height * 0.19,
+      height: onClick != true ? height * 0.1 : height * 0.19,
       width: width,
       margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
       decoration: BoxDecoration(
@@ -179,10 +180,10 @@ class _UserHomeViewState extends State<UserHomeView> {
       ),
       child: Column(
         children: [
-          destinationDetails(height, width, 'From ', _currentAddress,
+          destinationDetails(height, width, 'من ', _currentAddress,
               Icons.location_on_outlined, Colors.green),
-          _onClick
-              ? destinationDetails(height, width, 'To ', _destinationAddress,
+         onClick
+              ? destinationDetails(height, width, 'إلى ', _destinationAddress,
                   Icons.add_location_alt_outlined, Colors.red)
               : Container(),
         ],
@@ -197,15 +198,18 @@ class _UserHomeViewState extends State<UserHomeView> {
       left: 20,
       child: InkWell(
         onTap: () {
-          if (_onClick != true && _destinationAddress == '') {
-            alertShowDialog(width, context);
-          } else if (_onClick != true && _destinationAddress != '') {
+          var addRide = Provider.of<AddRides>(context, listen: false);
+          if (onClick != true && _destinationAddress == '' && addRide.addingRide != true) {
+            alertShowDialog(width, context, 'يرجى تحديد وجهتك');
+          } else if (onClick != true && _destinationAddress != '' && addRide.addingRide != true) {
             setState(() {
-              _onClick = true;
+              onClick = true;
             });
-          } else if (_onClick == true && _destinationAddress != '') {
+          } else if (onClick == true && _destinationAddress != '' && addRide.addingRide != true) {
             billingShowDialog(height, width, context, currentLatLng,
                 destinationLatLng, _currentAddress, _destinationAddress);
+          }else{
+            alertShowDialog(width, context, 'الرحلة قائمة الان');
           }
         },
         child: Container(
@@ -214,7 +218,7 @@ class _UserHomeViewState extends State<UserHomeView> {
           margin: EdgeInsets.only(bottom: 10.0),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5.0),
-            color: _onClick != true ? KGradientColor : KOrangeColor,
+            color: onClick != true ? KGradientColor : KOrangeColor,
             boxShadow: [
               BoxShadow(
                 color: Colors.black26,
@@ -225,7 +229,7 @@ class _UserHomeViewState extends State<UserHomeView> {
           ),
           child: Center(
             child: Text(
-              _onClick != true ? 'Set Destination' : 'Confirm Destination',
+              onClick != true ? 'حدد وجهتك' : 'تأكيد المكان',
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 22,

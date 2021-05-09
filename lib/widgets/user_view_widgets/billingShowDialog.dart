@@ -2,16 +2,17 @@ import 'package:final_project/app_approach/model/driver_model.dart';
 import 'package:final_project/app_approach/view/user_view/user_payment_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+//import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../constants.dart';
 import 'driversBottomSheet.dart';
+import 'package:geodesy/geodesy.dart';
 
 Future billingShowDialog(
     double height,
     double width,
     BuildContext context,
-    LatLng currentLatlng,
-    LatLng destinationLatlng,
+    var currentLatlng,
+    var destinationLatlng,
     String currentAddress,
     String destinationAddress) {
   var _driversDataList = DriversData().drivers;
@@ -21,12 +22,12 @@ Future billingShowDialog(
       builder: (context) {
         return AlertDialog(
           content: Container(
-            height: height * 0.6,
+            height: height * 0.46,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Container(
-                  height: 200,
+                  height: 190,
                   decoration: BoxDecoration(
                     image: DecorationImage(
                       image:
@@ -35,21 +36,41 @@ Future billingShowDialog(
                     ),
                   ),
                 ),
+                SizedBox(
+                  height: 8,
+                ),
                 Text(
-                  'In Order to complete your booking please add a payment method or detect cashing process',
+                  'من أجل إتمام الحجز ، يرجى إضافة طريقة دفع أو الكشف عن عملية الصرف',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: Colors.grey.shade700,
-                    fontSize: 16,
+                    color: KBlackColor,
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    height: 1.2,
                   ),
                 ),
                 Divider(
                   height: 2.5,
                   color: KGradientColor,
                 ),
+                Expanded(child: SizedBox()),
                 Row(
                   children: [
-                    _customShowDialogButton(KOrangeColor, 'Cash', () {
+                    _customShowDialogButton(KGradientColor, 'الدفع الالكتروني', () {
+                      Navigator.of(context).pop();
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            content: UserPaymentView(),
+                          );
+                        },
+                      );
+                    }),
+                    SizedBox(
+                      width: 10.0,
+                    ),
+                    _customShowDialogButton(KOrangeColor, 'كاش', () {
                       Navigator.of(context).pop();
                       driversBottomSheet(
                           context,
@@ -60,20 +81,6 @@ Future billingShowDialog(
                           destinationLatlng,
                           currentAddress,
                           destinationAddress);
-                    }),
-                    SizedBox(
-                      width: 10.0,
-                    ),
-                    _customShowDialogButton(KGradientColor, 'Add billing', () {
-                      Navigator.of(context).pop();
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            content: UserPaymentView(),
-                          );
-                        },
-                      );
                     }),
                   ],
                 ),
@@ -94,7 +101,7 @@ Expanded _customShowDialogButton(
         buttonTitle,
         style: TextStyle(
           color: KWhiteColor,
-          fontSize: 16,
+          fontSize: 12,
           fontWeight: FontWeight.bold,
         ),
       ),

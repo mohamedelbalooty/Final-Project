@@ -24,7 +24,7 @@ class DriversData{
         image:
         'https://cdn3.vectorstock.com/i/1000x1000/91/32/young-man-cartoon-vector-17299132.jpg',
         phoneNumber: 01111111234,
-        price: 4,
+        price: 4*25.0,
         rating: '⭐⭐⭐⭐'),
     DriverModel(
         id: 2,
@@ -32,7 +32,7 @@ class DriversData{
         image:
         'https://cdn3.vectorstock.com/i/1000x1000/63/42/young-man-face-cartoon-vector-19116342.jpg',
         phoneNumber: 01111112345,
-        price: 5,
+        price: 5*25.0,
         rating: '⭐⭐⭐⭐⭐'),
     DriverModel(
         id: 3,
@@ -40,7 +40,7 @@ class DriversData{
         image:
         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTBfaLpucJ-ZxchbI-sbTjRmuZquahlul7Bsraf9tnTPopHNjggT3E_diP02nZgPEYjgEo&usqp=CAU',
         phoneNumber: 01111123456,
-        price: 3,
+        price: 3*25.0,
         rating: '⭐⭐'),
     DriverModel(
         id: 4,
@@ -48,7 +48,7 @@ class DriversData{
         image:
         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3UayzfjvoAG07UbS9G26kW4tjmHS1w4o144NoGIAAUXosn4d0jfUpo5yDyVXYR6KwqzM&usqp=CAU',
         phoneNumber: 01111234567,
-        price: 2.5,
+        price: 2.5*25.0,
         rating: '⭐⭐⭐'),
   ];
 }
