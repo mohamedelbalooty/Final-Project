@@ -289,7 +289,9 @@ class _UserOnTripViewState extends State<UserOnTripView> {
                                 RideModel(
                                   currentAddress: widget.currentAddress,
                                   destinationAddress: widget.destinationAddress,
-                                  ridePrice: widget.currentDriver.price,
+                                  rideCurrent: widget.current,
+                                  rideDestination: widget.destination,
+                                  currentDriver: widget.currentDriver,
                                 ),
                               );
                               Provider.of<AddRides>(context, listen: false)
@@ -417,26 +419,3 @@ class _UserOnTripViewState extends State<UserOnTripView> {
     );
   }
 }
-
-//                    Expanded(
-//                      child: TimelineNode(
-//                        indicator: Icon(
-//                          Icons.location_searching,
-//                          color: Colors.greenAccent.shade400,
-//                        ),
-//                      ),
-//                    ),
-//                    Expanded(
-//                      child: SizedBox(
-//                        height: 100.0,
-//                        child: DashedLineConnector(color: Colors.grey,),
-//                      ),
-//                    ),
-//                    Expanded(
-//                      child: TimelineNode(
-//                        indicator: Icon(
-//                          Icons.location_on_rounded,
-//                          color: Colors.red,
-//                        ),
-//                      ),
-//                    ),

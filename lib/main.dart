@@ -16,6 +16,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Final Project',
+//        initialRoute: DriverProfileView.id,
         initialRoute: UserHomeNavigation.id,
         theme: ThemeData(
           fontFamily: 'Tajawal',

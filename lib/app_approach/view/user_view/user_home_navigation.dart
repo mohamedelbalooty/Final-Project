@@ -2,8 +2,7 @@ import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:final_project/app_approach/view/driver_view/driver_notification_view.dart';
 import 'package:final_project/app_approach/view/user_view/user_home_view.dart';
 import 'package:flutter/material.dart';
-import 'user_profile_view.dart';
-import 'user_sharing_rides.dart';
+import 'user_sharing_rides_view.dart';
 
 class UserHomeNavigation extends StatefulWidget {
   static String id = 'UserHomeNavigation';
@@ -17,7 +16,7 @@ class _UserHomeNavigationState extends State<UserHomeNavigation> {
 
   final List<Widget> _screens = [
     UserHomeView(),
-    UserSharingRides(),
+    UserSharingRidesView(),
     DriverNotificationView(),
   ];
 
