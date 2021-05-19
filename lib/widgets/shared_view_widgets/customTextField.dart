@@ -13,17 +13,17 @@ class CustomTextField extends StatelessWidget {
 
   _errorMessage(String value) {
     switch (label) {
-      case 'Name':
-        return 'Enter your name';
+      case 'الاسم':
+        return 'يرجى ادخال الاسم';
         break;
-      case 'Email':
-        return 'Enter your email';
+      case 'البريد الالكتروني':
+        return 'يرجى ادخال البريد الالكتروني';
         break;
-      case 'Phone':
-        return 'Enter your phone';
+      case 'رقم الهاتف':
+        return 'يرجى ادخال رقم الهاتف';
         break;
-      case 'Password':
-        return 'Enter your password';
+      case 'كلمة المرور':
+        return 'يرجى ادخال كلمة المرور';
         break;
       default:
         return 'Enter your value';
@@ -35,6 +35,7 @@ class CustomTextField extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
       child: TextFormField(
+
         onSaved: onClick,
         // ignore: missing_return
         validator: (value) {
@@ -42,22 +43,23 @@ class CustomTextField extends StatelessWidget {
             return _errorMessage(label);
           }
         },
+
         cursorColor: KOrangeColor,
         style: TextStyle(
           color: KWhiteColor,
           fontSize: 16.0,
           fontWeight: FontWeight.w500,
         ),
-        obscureText: label == 'Password' ? true : false,
+        obscureText: label == 'كلمة المرور' ? true : false,
         decoration: InputDecoration(
-          contentPadding: EdgeInsets.symmetric(vertical: 10.0),
+          contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10),
           labelText: label,
           labelStyle: TextStyle(
             color: KOrangeColor,
             fontSize: 16.0,
             fontWeight: FontWeight.w500,
           ),
-          prefixIcon: Icon(
+          suffixIcon: Icon(
             icon,
             color: KOrangeColor,
           ),

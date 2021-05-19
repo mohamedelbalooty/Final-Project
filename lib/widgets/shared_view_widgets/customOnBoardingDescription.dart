@@ -34,10 +34,13 @@ Widget buildOnboardDescription({
             ),
           ),
           SizedBox(height: 10.0),
-          Text(
-            description,
-            textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.white, fontSize: 17.0, height: 1.1),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Text(
+              description,
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.white, fontSize: 17.0, height: 1.3),
+            ),
           ),
         ],
       ),

@@ -33,7 +33,7 @@ class _SplashViewState extends State<SplashView> {
           children: [
             Image.asset('assets/images/photos/logo.png', width: 160, height: 160,),
             SizedBox(height: 5,),
-            Text('Tawseela', style: TextStyle(
+            Text('توصيلة', style: TextStyle(
                 color: Colors.deepOrange,
                 fontSize: 28,
                 fontWeight: FontWeight.w900,

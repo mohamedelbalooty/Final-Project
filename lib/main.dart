@@ -1,3 +1,4 @@
+import 'package:final_project/app_approach/view/shared_view/splash_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'app_approach/view/driver_view/driver_home_navigation.dart';
@@ -17,9 +18,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Final Project',
-//        initialRoute: DriverProfileView.id,
-//        initialRoute: UserHomeNavigation.id,
-      initialRoute: DriverHomeNavigation.id,
+        initialRoute: SplashView.id,
         theme: ThemeData(
           fontFamily: 'Tajawal',
           primarySwatch: Colors.indigo,

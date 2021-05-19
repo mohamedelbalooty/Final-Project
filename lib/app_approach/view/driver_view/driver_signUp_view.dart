@@ -40,13 +40,13 @@ class DriverSignUpView extends StatelessWidget {
                       children: [
                         Inputs(
                           icon: Icons.account_box,
-                          inputType: 'Name',
+                          inputType: 'الاسم',
                           controllerType: _name,
                           txtType: TextInputType.name,
                         ),
                         Inputs(
                           icon: Icons.phone,
-                          inputType: 'Phone',
+                          inputType: 'رقم الهاتف',
                           controllerType: _phone,
                           txtType: TextInputType.number,
                         ),
@@ -60,13 +60,13 @@ class DriverSignUpView extends StatelessWidget {
                         //Inputs is a custom widget
                         Inputs(
                           icon: Icons.email,
-                          inputType: 'Email',
+                          inputType: 'البريد الالكتروني',
                           controllerType: _email,
                           txtType: TextInputType.emailAddress,
                         ),
                         Inputs(
                           icon: Icons.lock_outline,
-                          inputType: 'Password',
+                          inputType: 'كلمة المرور',
                           controllerType: _password,
                           txtType: TextInputType.visiblePassword,
                         ),
@@ -78,7 +78,7 @@ class DriverSignUpView extends StatelessWidget {
                     margin: EdgeInsets.symmetric(horizontal: 20.0),
                     child: Inputs(
                       icon: Icons.drive_eta,
-                      inputType: 'Car Number',
+                      inputType: 'رقم السيارة',
                       controllerType: _carNum,
                       txtType: TextInputType.number,
                     ),
@@ -90,29 +90,13 @@ class DriverSignUpView extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Expanded(
-                          child: Container(
-                            height: 80.0,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              border:
-                                  Border.all(color: KOrangeColor, width: 1.5),
-                            ),
-                          ),
-                        ),
+                        _imageButton(
+                            'assets/images/photos/Asset 10.png', () {}),
                         SizedBox(
                           width: 10.0,
                         ),
-                        Expanded(
-                          child: Container(
-                            height: 80.0,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10.0),
-                              border:
-                                  Border.all(color: KOrangeColor, width: 1.5),
-                            ),
-                          ),
-                        ),
+                        _imageButton(
+                            'assets/images/photos/Asset 11.png', () {}),
                       ],
                     ),
                   ),
@@ -121,19 +105,39 @@ class DriverSignUpView extends StatelessWidget {
                       onTap: () {
                         Navigator.pushNamed(context, DriverHomeNavigation.id);
                       },
-                      child: customAuthenticationButton(width, 'Sign Up',
-                          [Colors.deepOrangeAccent, KGradientColor])),
+                      child: customAuthenticationButton(width, 'انشاء حساب',
+                          [Colors.deepOrangeAccent, KGradientColor],
+                              (){
+                            Navigator.pushReplacementNamed(context, DriverHomeNavigation.id);
+                          }
+                      ),),
 
-                  customAuthenticationButton(width, 'Sign Up',
-                      [Colors.deepOrangeAccent, KGradientColor]),
-                  customAuthenticationQuestion(context,
-                      'Already have an account ?', 'Login', DriverSignInView.id)
+                  customAuthenticationQuestion(context, 'لديك حساب بالفعل ؟',
+                      'تسجيل الدخول', DriverSignInView.id)
                 ],
               ),
             ),
           ),
         ),
       ],
+    );
+  }
+
+  Expanded _imageButton(String image, Function function) {
+    return Expanded(
+      child: InkWell(
+        onTap: function,
+        child: Container(
+          height: 80.0,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(color: KOrangeColor, width: 1.5),
+            image: DecorationImage(
+              image: ExactAssetImage(image),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
@@ -166,7 +170,7 @@ class Inputs extends StatelessWidget {
             focusedBorder: OutlineInputBorder(
               borderSide: const BorderSide(color: KOrangeColor, width: 1.5),
             ),
-            prefixIcon: Icon(
+            suffixIcon: Icon(
               icon,
               color: KOrangeColor,
             ),

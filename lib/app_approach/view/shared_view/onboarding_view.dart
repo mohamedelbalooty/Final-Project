@@ -45,6 +45,10 @@ class _OnBoardingViewState extends State<OnBoardingView> {
                   .of(context)
                   .size
                   .height * 0.81,
+              margin: EdgeInsets.only(top: MediaQuery
+                  .of(context)
+                  .size
+                  .height * 0.11),
               child: PageView(
                 physics: ClampingScrollPhysics(),
                 controller: _pageController,
@@ -57,23 +61,22 @@ class _OnBoardingViewState extends State<OnBoardingView> {
                   buildOnboardDescription(
                     context: context,
                     img: 'assets/images/photos/Asset 1.png',
-                    title: "Let's get Started",
+                    title: 'لنبدأ رحلتنا معاً',
                     description:
-                    'Lorem ipsum dolor sit amet, consect adipiscing elit, sed do eiusmod tempor incididunt ut labore.',
+                    'مع توصيلة، يمكنك الوصول إلى أي مكان بكل سهولة إذا كنت متجهاً لإنجاز بعض مهام عملك في المدينة أو كنت تقضي عطلة في مدينة أخرى',
                   ),
                   buildOnboardDescription(
                     context: context,
                     img: 'assets/images/photos/Asset 2.png',
-                    title: 'Taxi Driver Talking',
+                    title: 'تحقق من السائق اينما كان',
                     description:
-                    'Lorem ipsum dolor sit amet, consect adipiscing elit, sed do eiusmod tempor incididunt ut labore.',
+                    'تعرَّف على المزيد من المعلومات حول كيفية إجراء المشاوير من خلال تطبيق توصيلة',
                   ),
                   buildOnboardDescription(
                     context: context,
                     img: 'assets/images/photos/Asset 3.png',
-                    title: 'Make a Success',
-                    description:
-                    'Lorem ipsum dolor sit amet, consect adipiscing elit, sed do eiusmod tempor incididunt ut labore.',
+                    title: 'تتبع رحلتك الان',
+                    description: 'يمكنك تتبُّع وصولك على الخريطة, ثم انتظر عند موقع الالتقاء',
                   ),
                 ],
               ),

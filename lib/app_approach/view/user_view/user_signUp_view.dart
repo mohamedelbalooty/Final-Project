@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:toast/toast.dart';
 import '../../../constants.dart';
+import 'user_home_navigation.dart';
 import 'user_signIn_view.dart';
 
 // ignore: must_be_immutable
@@ -49,28 +50,28 @@ class UserSignUpView extends StatelessWidget {
                     ),
                   ),
                   CustomTextField(
-                    label: 'Name',
+                    label: 'الاسم',
                     icon: Icons.person_outline,
                     onClick: (String value) {
                       _name = value;
                     },
                   ),
                   CustomTextField(
-                    label: 'Email',
+                    label: 'البريد الالكتروني',
                     icon: Icons.email_outlined,
                     onClick: (String value) {
                       _email = value;
                     },
                   ),
                   CustomTextField(
-                    label: 'Phone',
+                    label: 'رقم الهاتف',
                     icon: Icons.phone,
                     onClick: (String value) {
                       _phone = value;
                     },
                   ),
                   CustomTextField(
-                    label: 'Password',
+                    label: 'كلمة المرور',
                     icon: Icons.lock_outline,
                     onClick: (String value) {
                       _password = value;
@@ -80,10 +81,12 @@ class UserSignUpView extends StatelessWidget {
                     onTap: () {
                       _validate(context);
                     },
-                    child: customAuthenticationButton(width, 'Sign Up', [KGradientColor, Colors.deepOrangeAccent]),
+                    child: customAuthenticationButton(width, 'انشاء حساب', [KGradientColor, Colors.deepOrangeAccent], (){
+                      _validate(context);
+                    }),
                   ),
-                  customAuthenticationQuestion(context, 'Already have an account ?',
-                      'Login', UserSignInView.id),
+                  customAuthenticationQuestion(context, 'تمتلك حساب بالفعل ؟',
+                      'تسجيل الدخول', UserSignInView.id),
                 ],
               ),
             ),
@@ -97,7 +100,7 @@ class UserSignUpView extends StatelessWidget {
     if (_globalKey.currentState.validate()) {
       try {
         _globalKey.currentState.save();
-        //TODO SOMETHING
+        Navigator.pushReplacementNamed(context, UserHomeNavigation.id);
       } on PlatformException catch (exception) {
         //TODO Handel Exception
         Toast.show(exception.message, context,

@@ -78,6 +78,7 @@ class _DriverHomeViewState extends State<DriverHomeView> {
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: KGradientColor,
+        automaticallyImplyLeading: false,
         title: Text(
           'الرئيسية للسائق',
           style: TextStyle(

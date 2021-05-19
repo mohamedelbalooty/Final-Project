@@ -40,7 +40,7 @@ class HomeViewShared extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 20.0),
                           child: Text(
-                            'Welcome to in Tawseela App system',
+                            'مرحبًا بك في تطبيق توصيلة',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: KWhiteColor,
@@ -61,12 +61,12 @@ class HomeViewShared extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         buildHomeButton(
-                            title: 'Driver',
+                            title: 'السائق',
                             buttonColor: [Colors.deepOrangeAccent, KGradientColor],
                             context: context,
                             nextScreen: DriverSignInView()),
                         buildHomeButton(
-                            title: 'User',
+                            title: 'الراكب',
                             buttonColor: [KGradientColor, Colors.deepOrangeAccent],
                             context: context,
                             nextScreen: UserSignInView()),

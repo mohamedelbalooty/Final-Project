@@ -33,13 +33,13 @@ class DriverSignInView extends StatelessWidget {
                 ),
                 Inputs(
                   icon: Icons.email,
-                  inputType: 'Email',
+                  inputType: 'البريد الالكتروني',
                   controllerType: email,
                   txtType: TextInputType.emailAddress,
                 ),
                 Inputs(
                   icon: Icons.lock_outline,
-                  inputType: 'Password',
+                  inputType: 'كلمة المرور',
                   controllerType: password,
                   txtType: TextInputType.visiblePassword,
                 ),
@@ -49,12 +49,16 @@ class DriverSignInView extends StatelessWidget {
                   },
                   child: customAuthenticationButton(
                     width,
-                    'Sign In',
+                    'تسجيل الدخول',
                     [Colors.deepOrangeAccent, KGradientColor],
+                    () {
+                      Navigator.pushReplacementNamed(
+                          context, DriverHomeNavigation.id);
+                    },
                   ),
                 ),
-                customAuthenticationQuestion(context,
-                    'Don\'t have an account ?', 'Register', DriverSignUpView.id)
+                customAuthenticationQuestion(context, 'لا تمتلك حساب ؟',
+                    'أنشاء حساب جديد', DriverSignUpView.id)
               ],
             ),
           ),
@@ -80,6 +84,7 @@ class Inputs extends StatelessWidget {
       width: MediaQuery.of(context).size.width,
       margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
       child: TextField(
+        textDirection: TextDirection.rtl,
         keyboardType: txtType,
         style: TextStyle(
           color: KOrangeColor,
@@ -91,13 +96,15 @@ class Inputs extends StatelessWidget {
           enabledBorder: OutlineInputBorder(
             borderSide: const BorderSide(color: KOrangeColor, width: 1.5),
           ),
-          prefixIcon: Icon(
+          suffixIcon: Icon(
             icon,
             color: KOrangeColor,
           ),
           labelText: '$inputType',
-          labelStyle:
-              TextStyle(color: KOrangeColor, fontWeight: FontWeight.bold),
+          labelStyle: TextStyle(
+            color: KOrangeColor,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         controller: controllerType,
         onSubmitted: (_) => null,

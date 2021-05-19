@@ -9,6 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:toast/toast.dart';
+import 'user_home_navigation.dart';
 import 'user_signUp_view.dart';
 
 // ignore: must_be_immutable
@@ -43,7 +44,7 @@ class UserSignInView extends StatelessWidget {
                   customLogo(),
                   _distance,
                   CustomTextField(
-                    label: 'Email',
+                    label: 'البريد الالكتروني',
                     icon: Icons.email_outlined,
                     onClick: (String value) {
                       _email = value;
@@ -51,7 +52,7 @@ class UserSignInView extends StatelessWidget {
                   ),
                   _distance,
                   CustomTextField(
-                    label: 'Password',
+                    label: 'كلمة المرور',
                     icon: Icons.lock_outline,
                     onClick: (String value) {
                       _password = value;
@@ -62,10 +63,12 @@ class UserSignInView extends StatelessWidget {
                     onTap: () {
                       _validate(context);
                     },
-                    child: customAuthenticationButton(width, 'Sign In', [KGradientColor, Colors.deepOrangeAccent]),
+                    child: customAuthenticationButton(width, 'تسجيل الدخول', [KGradientColor, Colors.deepOrangeAccent], (){
+                      _validate(context);
+                    }),
                   ),
-                  customAuthenticationQuestion(context, 'Don\'t have an account ?',
-                      'Register', UserSignUpView.id),
+                  customAuthenticationQuestion(context, 'لا تمتلك حساب ؟',
+                      'انشاء حساب جديد', UserSignUpView.id),
                 ],
               ),
             ),
@@ -79,7 +82,7 @@ class UserSignInView extends StatelessWidget {
     if (_globalKey.currentState.validate()) {
       try {
         _globalKey.currentState.save();
-        //TODO SOMETHING
+        Navigator.pushReplacementNamed(context, UserHomeNavigation.id);
       } on PlatformException catch (exception) {
         //TODO Handel Exception
         Toast.show(exception.message, context,
