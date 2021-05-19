@@ -22,18 +22,6 @@ class _UserHomeNavigationState extends State<UserHomeNavigation> {
 
   int _currentIndex = 0;
 
-//  void _onPageChanged(int index) {
-//    setState(() {
-//      _currentIndex = index;
-//    });
-//    Navigator.pushReplacement(
-//      context,
-//      MaterialPageRoute(
-//        builder: (context) => _screens[index],
-//      ),
-//    );
-//  }
-
   void _onItemTapped(int selectedIndex) {
     setState(() {
       _currentIndex = selectedIndex;
@@ -90,27 +78,3 @@ class _UserHomeNavigationState extends State<UserHomeNavigation> {
     );
   }
 }
-
-//bottomNavigationBar: Align(
-//alignment: Alignment.bottomCenter,
-//child: Container(
-//height: 60,
-//child: RollingNavBar.iconData(
-//onTap: _onItemTapped,
-//animationCurve: Curves.easeOut,
-//// `easeOut` (the default) is recommended here
-//animationType: AnimationType.roll,
-//baseAnimationSpeed: 200,
-//indicatorColors: <Color>[
-//Colors.red,
-//Colors.yellow,
-//Colors.blue,
-//],
-//iconData: <IconData>[
-//Icons.water_damage_outlined,
-//Icons.person_outline,
-//Icons.directions,
-//],
-//),
-//),
-//),

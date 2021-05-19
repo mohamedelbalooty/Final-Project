@@ -1,22 +1,17 @@
 import 'package:final_project/app_approach/model/driver_model.dart';
-import 'package:final_project/app_approach/model/ride_model.dart';
 import 'package:final_project/constants.dart';
-import 'package:final_project/provider/addRides.dart';
 import 'package:final_project/widgets/user_view_widgets/custom_timeLine.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
-import 'package:provider/provider.dart';
 import 'package:toast/toast.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 class UserRideView extends StatefulWidget {
   static const String id = 'UserOnTripView';
   final LatLng current;
   final LatLng destination;
   final String currentAddress, destinationAddress;
   final DriverModel currentDriver;
-
   // ignore: sort_constructors_first
   UserRideView({
     @required this.current,
@@ -25,16 +20,13 @@ class UserRideView extends StatefulWidget {
     @required this.destinationAddress,
     @required this.currentDriver,
   });
-
   @override
   _UserRideViewState createState() => _UserRideViewState();
 }
-
 class _UserRideViewState extends State<UserRideView> {
   final LatLng _initialcameraposition = LatLng(30.97063, 31.1669);
   GoogleMapController _controller;
   final Location _location = Location();
-
   void _onMapCreated(GoogleMapController _cntlr) {
     _controller = _cntlr;
     _location.onLocationChanged.listen((l) {
@@ -49,11 +41,9 @@ class _UserRideViewState extends State<UserRideView> {
       );
     });
   }
-
   var default1 = LatLng(30.97063, 31.1669);
   var default2 = LatLng(31.037933, 31.381523);
   List<Polyline> myPolyline = [];
-
   void createPolyline() {
     myPolyline.add(
       Polyline(
@@ -71,7 +61,6 @@ class _UserRideViewState extends State<UserRideView> {
 
   bool _isLoading = false;
   bool _onGoing = false;
-
   @override
   void initState() {
     super.initState();

@@ -1,5 +1,11 @@
+import 'package:final_project/app_approach/view/user_view/user_ride_view.dart';
 import 'package:final_project/constants.dart';
+import 'package:final_project/life_tracking/ride_location_tracker.dart';
+import 'package:final_project/provider/addRides.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:timeline_tile/timeline_tile.dart';
+import 'package:toast/toast.dart';
 
 class DriverNotificationView extends StatefulWidget {
   static String id = 'DriverNotificationView';
@@ -9,160 +15,252 @@ class DriverNotificationView extends StatefulWidget {
 }
 
 class _DriverNotificationViewState extends State<DriverNotificationView> {
-  int currentIndex = 0;
+  bool _isLoading = false;
+  bool _acceptRide = false;
+
+  Future callMe() async {
+    await Future.delayed(Duration(seconds: 3));
+    setState(() {
+      _isLoading = true;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    callMe();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 3,
-      child: Scaffold(
-        body: Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.only(top: 30, bottom: 5),
-              child: TabBar(
-                isScrollable: false,
-                indicatorColor: KOrangeColor,
-                onTap: (index) {
-                  setState(() {
-                    currentIndex = index;
-                  });
-                },
-                tabs: [
-                  _customTap(currentIndex, 0, 'Pending'),
-                  _customTap(currentIndex, 1, 'Rejected'),
-                  _customTap(currentIndex, 2, 'Accepted'),
-                ],
-              ),
+    var currentRides = Provider.of<AddRides>(context).rides;
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: KGradientColor,
+        centerTitle: true,
+        title: Text(
+          'اشعارات الطرق',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 22,
+          ),
+        ),
+      ),
+      body: _isLoading == false
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : LayoutBuilder(
+              builder: (context, _) {
+                if (currentRides.length != 0) {
+                  return ListView.builder(
+                    itemCount: currentRides.length,
+                    itemBuilder: (context, index) {
+                      return InkWell(
+                        onTap: () {},
+                        child: Card(
+                          margin: EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 10),
+                          elevation: 8,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 12),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(top: 15, right: 5),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        '${currentRides[index].time.year}-${currentRides[index].time.month}-${currentRides[index].time.day}',
+                                        style: TextStyle(
+                                          color: KBlackColor,
+                                          height: 0.5,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                _rideTimeLine(
+                                    index,
+                                    currentRides[index].currentAddress,
+                                    true,
+                                    false,
+                                    Colors.greenAccent.shade400,
+                                    Icons.location_searching),
+                                _rideTimeLine(
+                                    index,
+                                    currentRides[index].destinationAddress,
+                                    false,
+                                    true,
+                                    Colors.red,
+                                    Icons.location_on_rounded),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(horizontal: 5),
+                                  child: Divider(
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                      bottom: 10, left: 5, top: 10),
+                                  child: Row(
+                                    children: [
+                                      _driverAcceptButton(
+                                          'قبول', KGradientColor, () {
+                                        if (_acceptRide != true) {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  RideLocationTracker(
+                                                currentRides[index].rideCurrent,
+                                                currentRides[index]
+                                                    .rideDestination,
+                                              ),
+                                            ),
+                                          ).then((value) {
+                                            setState(() {
+                                              _acceptRide = value;
+                                            });
+                                          });
+                                        } else {
+                                          Toast.show(
+                                              'عذراً لقد تم قبول رحلة مسبقاً!',
+                                              context,
+                                              duration: Toast.LENGTH_LONG,
+                                              gravity: Toast.CENTER);
+                                        }
+                                      }),
+                                      _driverAcceptButton('رفض', Colors.red,
+                                          () {
+                                        Provider.of<AddRides>(context,
+                                                listen: false)
+                                            .rideDelete(currentRides[index]);
+                                      }),
+                                      Expanded(child: SizedBox()),
+                                      Text(
+                                        '${currentRides[index].currentDriver.price / 2} LE',
+                                        style: TextStyle(
+                                          color: KOrangeColor,
+                                          height: 0.5,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                } else {
+                  return Center(
+                    child: Container(
+                      height: 40,
+                      width: 200,
+                      margin: EdgeInsets.only(left: 10),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: KGradientColor,
+                        boxShadow: [
+                          BoxShadow(
+                              color: Colors.black12,
+                              offset: Offset(-1, 1),
+                              blurRadius: 5),
+                        ],
+                      ),
+                      child: Center(
+                        child: Text(
+                          'لا توجد طرق حالية الان',
+                          style: TextStyle(
+                            color: KWhiteColor,
+                            fontSize: 18,
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                }
+              },
             ),
-            SizedBox(
-              height: 20,
-            ),
-            Expanded(
-              child: ListView.builder(
-                  itemCount: 5,
-                  itemBuilder: (context, index) {
-                    return Customer(
-                      imageUrl: "assets/images/photos/person.jpg",
-                      name: "Smith Mark",
-                    );
-                  }),
-            ),
+    );
+  }
+
+  InkWell _driverAcceptButton(String title, Color color, Function onClick) {
+    return InkWell(
+      onTap: onClick,
+      child: Container(
+        height: 30,
+        width: 100,
+        margin: EdgeInsets.only(left: 10),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: color,
+          boxShadow: [
+            BoxShadow(color: color, offset: Offset(-1, 1), blurRadius: 5),
           ],
+        ),
+        child: Center(
+          child: Text(
+            title,
+            style: TextStyle(
+              color: KWhiteColor,
+              fontSize: 18,
+            ),
+          ),
         ),
       ),
     );
   }
-}
 
-Widget _customTap(currentIndex, index, title) {
-  return Tab(
-    child: Container(
-      height: 55,
-      width: 100,
-      margin: EdgeInsets.symmetric(vertical: 2),
-      decoration: BoxDecoration(
-        color: KGradientColor,
-        borderRadius: BorderRadius.circular(5),
-      ),
-      child: Center(
-        child: Text(
-          title,
-          style: TextStyle(
-              fontSize: 19.0,
-              color: currentIndex == index ? KOrangeColor : KWhiteColor),
+  TimelineTile _rideTimeLine(int index, String address, bool first, bool last,
+      Color color, IconData icon) {
+    return TimelineTile(
+      alignment: TimelineAlign.start,
+      isFirst: first,
+      isLast: last,
+      indicatorStyle: IndicatorStyle(
+        width: 25,
+        color: color,
+        iconStyle: IconStyle(
+          color: Colors.white,
+          iconData: icon,
         ),
       ),
-    ),
-  );
-}
-
-class Customer extends StatelessWidget {
-  final String imageUrl, name;
-
-  Customer({this.imageUrl, this.name});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Container(
-              margin: EdgeInsets.all(5),
-              height: 60,
-              width: 60,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                image: DecorationImage(
-                    image: AssetImage(imageUrl), fit: BoxFit.cover),
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 30.0),
-              child: Column(
-                children: [
-                  Text(
-                    name,
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  Row(
-                    children: [
-                      Icon(Icons.access_time_sharp),
-                      SizedBox(width: 10.0),
-                      Text("PICK UP: 6:25PM")
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              child: Row(
-                children: [
-                  Container(
-                    color: Colors.red,
-                    child: Icon(
-                      Icons.close,
-                      color: Colors.white,
-                      size: 30,
-                    ),
-                  ),
-                  Container(
-                    color: Colors.green,
-                    child: Icon(
-                      Icons.check,
-                      color: Colors.white,
-                      size: 30,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
+      endChild: Container(
+        constraints: BoxConstraints(
+          minHeight: 50,
+          minWidth: 70,
         ),
-        Row(children: [
-          SizedBox(width: 7.0),
-          Icon(
-            Icons.location_on,
-            color: Colors.red,
+        child: Padding(
+          padding: EdgeInsets.only(top: 14, right: 5),
+          child: Flexible(
+            child: Text(
+              address,
+              maxLines: 1,
+              softWrap: true,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                color: KBlackColor,
+                fontSize: 16,
+              ),
+            ),
           ),
-          SizedBox(width: 7.0),
-          Text("pick up point: Smith railway")
-        ]),
-        Divider(color: Colors.grey),
-        Row(children: [
-          SizedBox(width: 7.0),
-          Icon(
-            Icons.location_on,
-            color: Colors.red,
-          ),
-          SizedBox(width: 7.0),
-          Text("pick up point: Smith railway")
-        ]),
-        SizedBox(height: 15.0),
-        Divider(color: Colors.grey),
-      ],
+        ),
+      ),
     );
   }
 }

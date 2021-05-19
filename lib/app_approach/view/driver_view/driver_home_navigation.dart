@@ -1,6 +1,6 @@
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:final_project/app_approach/view/driver_view/driver_notification_view.dart';
-import 'package:final_project/life_tracking/home_screen.dart';
+import 'package:final_project/life_tracking/ride_location_tracker.dart';
 import 'package:flutter/material.dart';
 import 'driver_home_view.dart';
 import 'driver_profile_view.dart';
@@ -16,7 +16,7 @@ class _DriverHomeNavigationState extends State<DriverHomeNavigation> {
   final PageController _pageController = PageController();
 
   final List<Widget> _screens = [
-    HomeScreen(),
+    DriverHomeView(),
     DriverNotificationView(),
     DriverProfileView(),
   ];

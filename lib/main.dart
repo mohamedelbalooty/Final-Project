@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'app_approach/view/driver_view/driver_home_navigation.dart';
 import 'app_approach/view/user_view/user_home_navigation.dart';
 import 'provider/addRides.dart';
 import 'routs.dart';
@@ -17,7 +18,8 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Final Project',
 //        initialRoute: DriverProfileView.id,
-        initialRoute: UserHomeNavigation.id,
+//        initialRoute: UserHomeNavigation.id,
+      initialRoute: DriverHomeNavigation.id,
         theme: ThemeData(
           fontFamily: 'Tajawal',
           primarySwatch: Colors.indigo,

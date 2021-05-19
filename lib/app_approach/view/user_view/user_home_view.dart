@@ -10,7 +10,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 
-
 class UserHomeView extends StatefulWidget {
   static String id = 'UserHomeView';
 
@@ -89,6 +88,7 @@ class _UserHomeViewState extends State<UserHomeView> {
   }
 
   bool onClick = false;
+
   @override
   Widget build(BuildContext context) {
     bool isPortrait =
@@ -182,7 +182,7 @@ class _UserHomeViewState extends State<UserHomeView> {
         children: [
           destinationDetails(height, width, 'من ', _currentAddress,
               Icons.location_on_outlined, Colors.green),
-         onClick
+          onClick
               ? destinationDetails(height, width, 'إلى ', _destinationAddress,
                   Icons.add_location_alt_outlined, Colors.red)
               : Container(),
@@ -199,16 +199,22 @@ class _UserHomeViewState extends State<UserHomeView> {
       child: InkWell(
         onTap: () {
           var addRide = Provider.of<AddRides>(context, listen: false);
-          if (onClick != true && _destinationAddress == '' && addRide.addingRide != true) {
+          if (onClick != true &&
+              _destinationAddress == '' &&
+              addRide.addingRide != true) {
             alertShowDialog(width, context, 'يرجى تحديد وجهتك');
-          } else if (onClick != true && _destinationAddress != '' && addRide.addingRide != true) {
+          } else if (onClick != true &&
+              _destinationAddress != '' &&
+              addRide.addingRide != true) {
             setState(() {
               onClick = true;
             });
-          } else if (onClick == true && _destinationAddress != '' && addRide.addingRide != true) {
+          } else if (onClick == true &&
+              _destinationAddress != '' &&
+              addRide.addingRide != true) {
             billingShowDialog(height, width, context, currentLatLng,
                 destinationLatLng, _currentAddress, _destinationAddress);
-          }else{
+          } else {
             alertShowDialog(width, context, 'الرحلة قائمة الان');
           }
         },

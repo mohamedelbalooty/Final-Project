@@ -8,10 +8,11 @@ class AddRides extends ChangeNotifier {
     RideModel(
       currentAddress: 'المنصورة شارع الجلاء',
       destinationAddress: 'طنطا شارع البحر',
-      rideCurrent: LatLng(30.97063, 31.1669),
-      rideDestination: LatLng(31.037933, 31.381523),
+      rideCurrent: LatLng(31.037933, 31.381523),
+      rideDestination: LatLng(30.7911111, 30.9980556),
       currentDriver: DriverModel(
-        image: 'https://img.freepik.com/free-vector/man-face-avatar-cartoon-character_18591-55466.jpg?size=338&ext=jpg',
+        image:
+            'https://img.freepik.com/free-vector/man-face-avatar-cartoon-character_18591-55466.jpg?size=338&ext=jpg',
         name: 'محمد',
         id: 5,
         phoneNumber: 0122455788,
@@ -30,7 +31,7 @@ class AddRides extends ChangeNotifier {
         name: 'احمد',
         id: 5,
         phoneNumber: 0122455788,
-        price: 30,
+        price: 50,
         rating: '⭐⭐',
       ),
     ),
@@ -38,6 +39,11 @@ class AddRides extends ChangeNotifier {
 
   void rideAdding(RideModel currentRide) {
     rides.add(currentRide);
+    notifyListeners();
+  }
+
+  void rideDelete(RideModel currentRide) {
+    rides.remove(currentRide);
     notifyListeners();
   }
 

@@ -1,7 +1,11 @@
 import 'dart:async';
+import 'dart:collection';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:location/location.dart';
 import '../../../constants.dart';
+import 'package:final_project/widgets/user_view_widgets/destinationDetails.dart';
 
 class DriverHomeView extends StatefulWidget {
   @override
@@ -9,88 +13,119 @@ class DriverHomeView extends StatefulWidget {
 }
 
 class _DriverHomeViewState extends State<DriverHomeView> {
-  final Completer<GoogleMapController> _controller = Completer();
 
-  static const LatLng _center = LatLng(45.521563, -122.677433);
+  String _currentAddress = '';
+  LatLng currentLatLng;
+  double _zoomValue = 18.0;
+  GoogleMapController _controller;
+  final _markers = HashSet<Marker>();
+  final LatLng _initialCameraPosition = LatLng(20.5937, 78.9629);
+  final Location _location = Location();
 
-  final Set<Marker> _markers = {};
 
-  LatLng _lastMapPosition = _center;
-
-  MapType _currentMapType = MapType.normal;
-
-  void _onMapTypeButtonPressed() {
+  bool _isLoading = false;
+  Future callMe() async {
+    await Future.delayed(Duration(seconds: 5));
     setState(() {
-      _currentMapType = _currentMapType == MapType.normal
-          ? MapType.satellite
-          : MapType.normal;
+      _isLoading = true;
     });
   }
 
-  void _onAddMarkerButtonPressed() {
+  @override
+  void initState() {
+    super.initState();
+    callMe();
+  }
+
+  Future _getAddress(latitude, longitude) async {
+    var placeMark =
+        await Geolocator().placemarkFromCoordinates(latitude, longitude);
     setState(() {
-      _markers.add(Marker(
-        // This marker id can be anything that uniquely identifies each marker.
-        markerId: MarkerId(_lastMapPosition.toString()),
-        position: _lastMapPosition,
-        infoWindow: InfoWindow(
-          title: 'Really cool place',
-          snippet: '5 Star Rating',
+      _currentAddress =
+          '${placeMark[0].name} ${placeMark[0].administrativeArea} ${placeMark[0].locality}';
+    });
+  }
+
+  void _onMapCreated(GoogleMapController _control) async {
+    _controller = _control;
+    _location.onLocationChanged.listen((l) async {
+      await _controller.animateCamera(
+        CameraUpdate.newCameraPosition(
+          CameraPosition(
+              target: LatLng(l.latitude, l.longitude), zoom: _zoomValue),
         ),
-        icon: BitmapDescriptor.defaultMarker,
-      ));
+      );
+      setState(() {
+        currentLatLng = LatLng(l.latitude, l.longitude);
+      });
+      await _getAddress(l.latitude, l.longitude);
+      setState(() {
+        _markers.add(
+          Marker(
+            markerId: MarkerId('id'),
+            position: LatLng(l.latitude, l.longitude),
+          ),
+        );
+      });
     });
-  }
-
-  void _onCameraMove(CameraPosition position) {
-    _lastMapPosition = position.target;
-  }
-
-  void _onMapCreated(GoogleMapController controller) {
-    _controller.complete(controller);
   }
 
   @override
   Widget build(BuildContext context) {
+    double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
     return Scaffold(
-      body: Stack(
-        children: <Widget>[
-          GoogleMap(
-            onMapCreated: _onMapCreated,
-            initialCameraPosition: CameraPosition(
-              target: _center,
-              zoom: 11.0,
-            ),
-            mapType: _currentMapType,
-            markers: _markers,
-            onCameraMove: _onCameraMove,
+      appBar: AppBar(
+        centerTitle: true,
+        backgroundColor: KGradientColor,
+        title: Text(
+          'الرئيسية للسائق',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 22,
           ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Align(
-              alignment: Alignment.topRight,
-              child: Padding(
-                padding: EdgeInsets.only(top: 50),
-                child: Column(
-                  children: <Widget>[
-                    FloatingActionButton(
-                      onPressed: _onMapTypeButtonPressed,
-                      materialTapTargetSize: MaterialTapTargetSize.padded,
-                      backgroundColor: KGradientColor,
-                      child: const Icon(Icons.map, size: 36.0, color: KOrangeColor,),
-                    ),
-                    SizedBox(height: 16.0),
-                    FloatingActionButton(
-                      onPressed: _onAddMarkerButtonPressed,
-                      materialTapTargetSize: MaterialTapTargetSize.padded,
-                      backgroundColor: KGradientColor,
-                      child: const Icon(Icons.add_location, size: 36.0, color: KOrangeColor,),
-                    ),
-                  ],
+        ),
+      ),
+      body: _isLoading == false
+          ? Center(child: CircularProgressIndicator())
+          : Stack(
+              children: <Widget>[
+                GoogleMap(
+                  markers: _markers,
+                  initialCameraPosition:
+                      CameraPosition(target: _initialCameraPosition),
+                  mapType: MapType.normal,
+                  onMapCreated: _onMapCreated,
+                  buildingsEnabled: true,
+                  mapToolbarEnabled: false,
+                  zoomControlsEnabled: true,
+                  myLocationEnabled: true,
                 ),
-              ),
+                _customMapDetails(height, width),
+              ],
             ),
+    );
+  }
+  Container _customMapDetails(double height, double width) {
+    return Container(
+      height: height * 0.1,
+      width: width,
+      margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+      decoration: BoxDecoration(
+        color: KGradientColor,
+        borderRadius: BorderRadius.circular(5.0),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black26,
+            blurRadius: 2.0,
+            offset: Offset(2, 2),
           ),
+        ],
+      ),
+      child: Column(
+        children: [
+          destinationDetails(height, width, 'من ', _currentAddress,
+              Icons.location_on_outlined, Colors.green),
         ],
       ),
     );
