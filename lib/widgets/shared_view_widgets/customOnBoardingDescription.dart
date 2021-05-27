@@ -15,7 +15,7 @@ Widget buildOnboardDescription({
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 40.0),
+            padding: const EdgeInsets.symmetric(vertical: 30.0),
             child: Image.asset(
               img,
               width: 300,
@@ -33,7 +33,7 @@ Widget buildOnboardDescription({
               fontWeight: FontWeight.bold,
             ),
           ),
-          SizedBox(height: 10.0),
+          SizedBox(height: 5.0),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Text(

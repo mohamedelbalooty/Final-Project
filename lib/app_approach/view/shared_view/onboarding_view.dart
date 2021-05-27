@@ -48,7 +48,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
               margin: EdgeInsets.only(top: MediaQuery
                   .of(context)
                   .size
-                  .height * 0.11),
+                  .height * 0.1),
               child: PageView(
                 physics: ClampingScrollPhysics(),
                 controller: _pageController,
@@ -83,7 +83,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
             ),
             Expanded(child: SizedBox()),
             Padding(
-              padding: const EdgeInsets.all(10.0),
+              padding: const EdgeInsets.only(bottom: 10, top: 0, left: 10, right: 10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

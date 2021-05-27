@@ -2,6 +2,7 @@ import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:final_project/app_approach/view/driver_view/driver_notification_view.dart';
 import 'package:final_project/app_approach/view/user_view/user_home_view.dart';
 import 'package:flutter/material.dart';
+import 'user_profile_view.dart';
 import 'user_sharing_rides_view.dart';
 
 class UserHomeNavigation extends StatefulWidget {
@@ -17,7 +18,7 @@ class _UserHomeNavigationState extends State<UserHomeNavigation> {
   final List<Widget> _screens = [
     UserHomeView(),
     UserSharingRidesView(),
-    DriverNotificationView(),
+    UserProfileView(),
   ];
 
   int _currentIndex = 0;
@@ -69,11 +70,11 @@ class _UserHomeNavigationState extends State<UserHomeNavigation> {
             icon: Icon(_currentIndex == 2 ? Icons.help : Icons.help_outline),
             title: Center(child: Text('المساعد الذكي', style: TextStyle(fontSize: 12),)),
             activeColor: Colors.orange),
-//        BottomNavyBarItem(
-//            icon:
-//                Icon(_currentIndex == 3 ? Icons.person : Icons.person_outline),
-//            title: Text('الملف الشخصي', style: TextStyle(fontSize: 11),),
-//            activeColor: Colors.indigoAccent),
+        BottomNavyBarItem(
+            icon:
+                Icon(_currentIndex == 3 ? Icons.person : Icons.person_outline),
+            title: Text('الملف الشخصي', style: TextStyle(fontSize: 11),),
+            activeColor: Colors.indigoAccent),
       ],
     );
   }

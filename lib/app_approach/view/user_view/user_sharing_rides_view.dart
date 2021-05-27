@@ -38,8 +38,7 @@ class _UserSharingRidesViewState extends State<UserSharingRidesView> {
           'الطرق المشتركة',
           style: TextStyle(
             color: Colors.white,
-            fontWeight: FontWeight.bold,
-            fontSize: 22,
+            fontSize: 20,
           ),
         ),
       ),
