@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 //import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../constants.dart';
 import 'driversBottomSheet.dart';
-import 'package:geodesy/geodesy.dart';
 
 Future billingShowDialog(
     double height,
@@ -22,7 +21,8 @@ Future billingShowDialog(
       builder: (context) {
         return AlertDialog(
           content: Container(
-            height: height * 0.46,
+            height: 300,
+//            height: height * 0.46,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [

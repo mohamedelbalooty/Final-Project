@@ -85,7 +85,7 @@ class _UserPaymentViewState extends State<UserPaymentView> {
               color: Colors.blueGrey[100],
               child: Center(
                 child: Text(
-                  'Enter your payment information',
+                  'أدخل معلومات الدفع الخاصة بك',
                   style: TextStyle(color: Colors.indigoAccent),
                 ),
               ),
@@ -104,7 +104,7 @@ class _UserPaymentViewState extends State<UserPaymentView> {
                   ),
                   Expanded(
                     child: Text(
-                      'Credit Card',
+                      'بطاقة إئتمان',
                       style: TextStyle(color: Colors.grey),
                     ),
                   ),
@@ -145,13 +145,13 @@ class _UserPaymentViewState extends State<UserPaymentView> {
               child: Row(
                 children: [
                   buildPaymentTextFormField(
-                      hint: 'Zip Code', icon: Icons.credit_card),
+                      hint: 'الرمز البريدي', icon: Icons.credit_card),
                 ],
               ),
             ),
             buildPaymentButton(
                 color: Colors.blueAccent,
-                child: Text('Save',
+                child: Text('حفظ',
                     style: TextStyle(color: Colors.white, fontSize: 20)),
                 function: () {
                   if (formKey.currentState.validate()) {
@@ -166,7 +166,7 @@ class _UserPaymentViewState extends State<UserPaymentView> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: Text(
-                    'OR',
+                    'أو',
                     style: TextStyle(
                       color: KGradientColor,
                       fontSize: 25,

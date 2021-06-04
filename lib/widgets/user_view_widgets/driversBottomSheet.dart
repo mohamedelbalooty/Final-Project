@@ -77,6 +77,7 @@ InkWell _listItem(
     String destinationAddress) {
   return InkWell(
     onTap: () {
+      Navigator.pop(context);
       Navigator.push(
         context,
         MaterialPageRoute(

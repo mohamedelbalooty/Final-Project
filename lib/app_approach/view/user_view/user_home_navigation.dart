@@ -66,10 +66,10 @@ class _UserHomeNavigationState extends State<UserHomeNavigation> {
                 : Icons.directions_outlined),
             title: Center(child: Text('الطرق المشتركة', style: TextStyle(fontSize: 11),)),
             activeColor: Colors.green),
-        BottomNavyBarItem(
-            icon: Icon(_currentIndex == 2 ? Icons.help : Icons.help_outline),
-            title: Center(child: Text('المساعد الذكي', style: TextStyle(fontSize: 12),)),
-            activeColor: Colors.orange),
+//        BottomNavyBarItem(
+//            icon: Icon(_currentIndex == 2 ? Icons.help : Icons.help_outline),
+//            title: Center(child: Text('المساعد الذكي', style: TextStyle(fontSize: 12),)),
+//            activeColor: Colors.orange),
         BottomNavyBarItem(
             icon:
                 Icon(_currentIndex == 3 ? Icons.person : Icons.person_outline),

@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 class SplashView extends StatefulWidget {
   static String id = 'SplashView';
@@ -10,7 +9,7 @@ class SplashView extends StatefulWidget {
 class _SplashViewState extends State<SplashView> {
   @override
   void initState() {
-    Timer(Duration(seconds: 5), (){
+    Timer(Duration(seconds: 6), (){
       Navigator.pushReplacementNamed(context, 'OnBoardingView');}
     );
     super.initState();
