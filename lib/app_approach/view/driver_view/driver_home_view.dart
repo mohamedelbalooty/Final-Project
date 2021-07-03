@@ -4,16 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../constants.dart';
 import 'package:final_project/widgets/user_view_widgets/destinationDetails.dart';
 
 class DriverHomeView extends StatefulWidget {
+
   @override
   _DriverHomeViewState createState() => _DriverHomeViewState();
 }
 
 class _DriverHomeViewState extends State<DriverHomeView> {
-
   String _currentAddress = '';
   LatLng currentLatLng;
   double _zoomValue = 18.0;
@@ -22,8 +23,8 @@ class _DriverHomeViewState extends State<DriverHomeView> {
   final LatLng _initialCameraPosition = LatLng(20.5937, 78.9629);
   final Location _location = Location();
 
-
   bool _isLoading = false;
+
   Future callMe() async {
     await Future.delayed(Duration(seconds: 5));
     setState(() {
@@ -34,8 +35,13 @@ class _DriverHomeViewState extends State<DriverHomeView> {
   @override
   void initState() {
     super.initState();
+//    setDriverId();
     callMe();
   }
+//  setDriverId() async{
+//    SharedPreferences _driverPrefs = await SharedPreferences.getInstance();
+//    _driverPrefs.setString('driverId', widget.driverId);
+//  }
 
   Future _getAddress(latitude, longitude) async {
     var placeMark =
@@ -70,10 +76,11 @@ class _DriverHomeViewState extends State<DriverHomeView> {
     });
   }
 
+
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
+    var height = MediaQuery.of(context).size.height;
+    var width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -107,6 +114,7 @@ class _DriverHomeViewState extends State<DriverHomeView> {
             ),
     );
   }
+
   Container _customMapDetails(double height, double width) {
     return Container(
       height: height * 0.1,
@@ -125,7 +133,7 @@ class _DriverHomeViewState extends State<DriverHomeView> {
       ),
       child: Column(
         children: [
-          destinationDetails(height, width, 'من ', _currentAddress,
+          destinationDetails(height, width, _currentAddress,
               Icons.location_on_outlined, Colors.green),
         ],
       ),

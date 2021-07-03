@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-
 import '../../constants.dart';
 
-Widget customAddingImageButton(Function onClick){
+Widget customAddingImageButton(newImage, Function onClick){
   return InkWell(
     onTap: onClick,
     child: Stack(
@@ -13,8 +12,8 @@ Widget customAddingImageButton(Function onClick){
           margin: EdgeInsets.only(top: 5.0, bottom: 5.0),
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: ExactAssetImage(
-                  'assets/images/icons/empty.jpg'),
+              image: newImage == null ? ExactAssetImage(
+                  'assets/images/icons/empty.jpg'): FileImage(newImage),
               fit: BoxFit.fill,
             ),
             border: Border.all(color: KOrangeColor, width: 1.5,),

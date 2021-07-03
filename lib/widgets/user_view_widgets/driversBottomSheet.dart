@@ -1,17 +1,20 @@
-import 'package:final_project/app_approach/model/driver_model.dart';
+import 'package:final_project/app_approach/controller/api_services.dart';
+import 'package:final_project/app_approach/model/driver.dart';
 import 'package:final_project/app_approach/view/user_view/user_onTrip_view.dart';
+import 'package:final_project/core_errorHandeling/error_handeling.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:provider/provider.dart';
 import '../../constants.dart';
 
 Future driversBottomSheet(
     BuildContext context,
     double height,
-    List<DriverModel> _driversDataList,
     double width,
     LatLng currentLatlng,
     LatLng destinationLatlng,
+    double distance,
     String currentAddress,
     String destinationAddress) {
   return showMaterialModalBottomSheet(
@@ -23,56 +26,92 @@ Future driversBottomSheet(
       ),
     ),
     context: context,
-    builder: (context) => Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      child: SingleChildScrollView(
-        controller: ModalScrollController.of(context),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            InkWell(
-              onTap: () => Navigator.pop(context),
-              child: Icon(
-                Icons.keyboard_arrow_down,
-                color: Colors.grey,
-                size: 30,
-              ),
-            ),
-            SizedBox(
-              height: height * 0.4,
-              child: MediaQuery.removePadding(
-                context: context,
-                removeTop: true,
-                child: ListView.builder(
-                  itemCount: _driversDataList.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return _listItem(
-                        context,
-                        width,
-                        _driversDataList,
-                        index,
-                        currentLatlng,
-                        destinationLatlng,
-                        currentAddress,
-                        destinationAddress);
-                  },
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
+    builder: (context) => FutureBuilder<List<Driver>>(
+      future: Provider.of<ApiService>(context, listen: false)
+          .getAllDrivers(context),
+      // ignore: missing_return
+      builder: (_, snapshot) {
+        switch (snapshot.connectionState) {
+          case ConnectionState.waiting:
+            return loading();
+            break;
+          case ConnectionState.active:
+            return loading();
+            break;
+          case ConnectionState.none:
+            return internetConnectionError();
+            break;
+          case ConnectionState.done:
+            if (snapshot.hasError) {
+              return internetConnectionError();
+            } else {
+              if (snapshot.data != null) {
+                var _dataDetails = snapshot.data;
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: SingleChildScrollView(
+                    controller: ModalScrollController.of(context),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        InkWell(
+                          onTap: () => Navigator.pop(context),
+                          child: Icon(
+                            Icons.keyboard_arrow_down,
+                            color: Colors.grey,
+                            size: 30,
+                          ),
+                        ),
+                        SizedBox(
+                          height: height * 0.4,
+                          child: MediaQuery.removePadding(
+                            context: context,
+                            removeTop: true,
+                            child: ListView.builder(
+                              itemCount: _dataDetails.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return _listItem(
+                                    context,
+                                    width,
+                                    _dataDetails,
+                                    index,
+                                    currentLatlng,
+                                    destinationLatlng,
+                                    distance,
+                                    currentAddress,
+                                    destinationAddress);
+                              },
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              }
+              return Center(child: Text('error'));
+            }
+            break;
+        }
+      },
     ),
   );
+}
+
+int _calculateTripPrice(price, distance) {
+  double distanceInKM = distance / 1000;
+  double totalPrice = distanceInKM * price;
+  return totalPrice.floor();
 }
 
 InkWell _listItem(
     context,
     double width,
-    List<DriverModel> _driversDataList,
+    List<Driver> _driversDataList,
     int index,
     LatLng currentLatlng,
     LatLng destinationLatlng,
+    double distance,
     String currentAddress,
     String destinationAddress) {
   return InkWell(
@@ -87,6 +126,8 @@ InkWell _listItem(
             currentAddress: currentAddress,
             destinationAddress: destinationAddress,
             currentDriver: _driversDataList[index],
+            distance: (distance / 1000).floor(),
+            price: _calculateTripPrice(_driversDataList[index].price, distance),
           ),
         ),
       );
@@ -117,7 +158,8 @@ InkWell _listItem(
                 bottom: 5,
               ),
               child: CircleAvatar(
-                backgroundImage: NetworkImage(_driversDataList[index].image),
+                backgroundImage:
+                    NetworkImage(_driversDataList[index].profileImage),
                 radius: 30,
               ),
             ),
@@ -143,7 +185,7 @@ InkWell _listItem(
             ),
             Expanded(child: SizedBox()),
             Text(
-              '${_driversDataList[index].price}LE',
+              '${_calculateTripPrice(_driversDataList[index].price, distance)}LE',
               style: TextStyle(
                 color: KBlackColor,
                 fontSize: 20,

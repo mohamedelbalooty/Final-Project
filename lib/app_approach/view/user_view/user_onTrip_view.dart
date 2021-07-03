@@ -1,5 +1,7 @@
-import 'package:final_project/app_approach/model/driver_model.dart';
-import 'package:final_project/app_approach/model/ride_model.dart';
+import 'package:final_project/app_approach/controller/api_services.dart';
+import 'package:final_project/app_approach/model/driver.dart';
+import 'package:final_project/app_approach/model/ride.dart';
+import 'package:final_project/app_approach/view/user_view/user_home_view.dart';
 import 'package:final_project/constants.dart';
 import 'package:final_project/provider/addRides.dart';
 import 'package:final_project/widgets/user_view_widgets/custom_timeLine.dart';
@@ -15,7 +17,9 @@ class UserOnTripView extends StatefulWidget {
   final LatLng current;
   final LatLng destination;
   final String currentAddress, destinationAddress;
-  final DriverModel currentDriver;
+  final Driver currentDriver;
+  final num distance;
+  final int price;
 
   // ignore: sort_constructors_first
   UserOnTripView({
@@ -24,6 +28,8 @@ class UserOnTripView extends StatefulWidget {
     @required this.currentAddress,
     @required this.destinationAddress,
     @required this.currentDriver,
+    @required this.distance,
+    @required this.price,
   });
 
   @override
@@ -31,7 +37,7 @@ class UserOnTripView extends StatefulWidget {
 }
 
 class _UserOnTripViewState extends State<UserOnTripView> {
-  final LatLng _initialcameraposition = LatLng(30.97063, 31.1669);
+//  final LatLng _initialcameraposition = widget.current;
   GoogleMapController _controller;
   final Location _location = Location();
 
@@ -69,13 +75,15 @@ class _UserOnTripViewState extends State<UserOnTripView> {
     );
   }
 
+//  bool
   bool _isLoading = false;
   bool _onGoing = false;
 
   @override
   void initState() {
     super.initState();
-    callMe();
+    _onGoing != true ? callMe() :
+        print('');
     setState(() {
       default1 = widget.current;
       default2 = widget.destination;
@@ -85,17 +93,15 @@ class _UserOnTripViewState extends State<UserOnTripView> {
 
   Future callMe() async {
     await Future.delayed(Duration(seconds: 5));
-    setState(() {
+     setState(() {
       _isLoading = true;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    bool isPortrait =
-        MediaQuery.of(context).orientation == Orientation.portrait;
-    double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
+    var height = MediaQuery.of(context).size.height;
+    var width = MediaQuery.of(context).size.width;
 
     return Scaffold(
       body: _isLoading == false
@@ -109,31 +115,68 @@ class _UserOnTripViewState extends State<UserOnTripView> {
     );
   }
 
-  Container _tripMap(double height, double width) {
-    return Container(
-      height: height * 0.55,
-      width: width,
-      child: GoogleMap(
-        polylines: myPolyline.toSet(),
-        markers: {
-          Marker(
-            markerId: MarkerId('1'),
-            position: widget.current,
+  Widget _tripMap(double height, double width) {
+    return Stack(
+      children: [
+        Container(
+          height: height * 0.55,
+          width: width,
+          child: GoogleMap(
+            polylines: myPolyline.toSet(),
+            markers: {
+              Marker(
+                markerId: MarkerId('1'),
+                position: widget.current,
+              ),
+              Marker(
+                markerId: MarkerId('2'),
+                position: widget.destination,
+              )
+            },
+            initialCameraPosition:
+                CameraPosition(target: widget.current),
+            mapType: MapType.normal,
+            onMapCreated: _onMapCreated,
+            myLocationEnabled: false,
           ),
-          Marker(
-            markerId: MarkerId('2'),
-            position: widget.destination,
-          )
-        },
-        initialCameraPosition: CameraPosition(target: _initialcameraposition),
-        mapType: MapType.normal,
-        onMapCreated: _onMapCreated,
-        myLocationEnabled: false,
-      ),
+        ),
+        Row(
+          children: [
+            Container(
+              height: 40,
+              width: 40,
+              margin: EdgeInsets.symmetric(horizontal: 10, vertical: 50),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.grey.shade200,
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.indigo,
+                      offset: Offset(1, 1),
+                      blurRadius: 5),
+                  BoxShadow(
+                      color: Colors.indigo,
+                      offset: Offset(-1, 1),
+                      blurRadius: 5),
+                ],
+              ),
+              child: Center(
+                child: InkWell(
+                  onTap: () => Navigator.of(context).pushNamed(UserHomeView.id),
+                  child: Icon(
+                    Icons.arrow_back,
+                    color: KGradientColor,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 
-  Container _tripCard(double height, double width, DriverModel driverInfo) {
+  Container _tripCard(double height, double width, Driver driverInfo) {
     return Container(
       height: height * 0.45,
       width: width,
@@ -187,11 +230,11 @@ class _UserOnTripViewState extends State<UserOnTripView> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            _tripInfo('المسافة', '5 KM'),
+                            _tripInfo('المسافة', '${widget.distance} KM'),
                             SizedBox(
                               width: 15,
                             ),
-                            _tripInfo('السعر', '${driverInfo.price} LE'),
+                            _tripInfo('السعر', '${widget.price} LE'),
                           ],
                         ),
                       ),
@@ -282,23 +325,33 @@ class _UserOnTripViewState extends State<UserOnTripView> {
                             SizedBox(
                               width: 10.0,
                             ),
-                            _customShowDialogButton(KOrangeColor, 'نعم', () {
+                            _customShowDialogButton(KOrangeColor, 'نعم',
+                                () async {
                               Navigator.pop(context);
-                              Provider.of<AddRides>(context, listen: false)
-                                  .rideAdding(
-                                RideModel(
-                                  currentAddress: widget.currentAddress,
-                                  destinationAddress: widget.destinationAddress,
-                                  rideCurrent: widget.current,
-                                  rideDestination: widget.destination,
-                                  currentDriver: widget.currentDriver,
-                                ),
-                              );
                               Provider.of<AddRides>(context, listen: false)
                                   .addingRideChanged();
                               Toast.show('تمت المشاركة بنجاح', context,
                                   duration: Toast.LENGTH_LONG,
                                   gravity: Toast.CENTER);
+                              await ApiService().addNewRide(Ride(
+                                rideId: widget.currentAddress,
+                                currentAddress: widget.currentAddress,
+                                destinationAddress: widget.destinationAddress,
+                                current: [widget.current.latitude, widget.current.longitude],
+                                destination: [widget.current.latitude, widget.current.longitude],
+                                price: widget.price,
+                                distance: widget.distance,
+                                dbId: widget.currentDriver.dbId,
+                                driverId: widget.currentDriver.id,
+                                name: widget.currentDriver.name,
+                                email: widget.currentDriver.email,
+                                phone: widget.currentDriver.phone,
+                                carNumber: widget.currentDriver.carNumber,
+                                driverProfileImage:
+                                    widget.currentDriver.profileImage,
+                                rating: widget.currentDriver.rating,
+                              ));
+
                             }),
                           ],
                         ),
@@ -347,7 +400,7 @@ class _UserOnTripViewState extends State<UserOnTripView> {
     );
   }
 
-  Container _driverInfo(double width, DriverModel driverInfo) {
+  Container _driverInfo(double width, Driver driverInfo) {
     return Container(
       height: 70,
       width: width,
@@ -363,7 +416,7 @@ class _UserOnTripViewState extends State<UserOnTripView> {
         child: Row(
           children: [
             CircleAvatar(
-              backgroundImage: NetworkImage(widget.currentDriver.image),
+              backgroundImage: NetworkImage(widget.currentDriver.profileImage),
               radius: 30,
             ),
             SizedBox(width: 10),
@@ -404,7 +457,7 @@ class _UserOnTripViewState extends State<UserOnTripView> {
               ),
               child: InkWell(
                 onTap: () async {
-                  await launch(('tel:${driverInfo.phoneNumber}'));
+                  await launch(('tel:${driverInfo.phone}'));
                 },
                 child: Icon(
                   Icons.phone,

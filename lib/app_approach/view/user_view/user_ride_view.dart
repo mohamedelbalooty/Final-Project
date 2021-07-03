@@ -1,4 +1,3 @@
-import 'package:final_project/app_approach/model/driver_model.dart';
 import 'package:final_project/constants.dart';
 import 'package:final_project/widgets/user_view_widgets/custom_timeLine.dart';
 import 'package:flutter/material.dart';
@@ -6,27 +5,49 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:toast/toast.dart';
 import 'package:url_launcher/url_launcher.dart';
+
 class UserRideView extends StatefulWidget {
   static const String id = 'UserOnTripView';
-  final LatLng current;
-  final LatLng destination;
+  final List<dynamic> current;
+  final List<dynamic> destination;
   final String currentAddress, destinationAddress;
-  final DriverModel currentDriver;
+  final num distance;
+  final int price;
+  final String driverId,
+      dbId,
+      name,
+      email,
+      phone,
+      driverProfileImage,
+      carNumber,
+      rating;
+
   // ignore: sort_constructors_first
   UserRideView({
     @required this.current,
     @required this.destination,
     @required this.currentAddress,
     @required this.destinationAddress,
-    @required this.currentDriver,
+    @required this.price,
+    @required this.distance,
+    @required this.dbId,
+    @required this.driverId,
+    @required this.name,
+    @required this.email,
+    @required this.phone,
+    @required this.carNumber,
+    @required this.driverProfileImage,
+    @required this.rating,
   });
+
   @override
   _UserRideViewState createState() => _UserRideViewState();
 }
+
 class _UserRideViewState extends State<UserRideView> {
-  final LatLng _initialcameraposition = LatLng(30.97063, 31.1669);
   GoogleMapController _controller;
   final Location _location = Location();
+
   void _onMapCreated(GoogleMapController _cntlr) {
     _controller = _cntlr;
     _location.onLocationChanged.listen((l) {
@@ -41,9 +62,11 @@ class _UserRideViewState extends State<UserRideView> {
       );
     });
   }
+
   var default1 = LatLng(30.97063, 31.1669);
   var default2 = LatLng(31.037933, 31.381523);
   List<Polyline> myPolyline = [];
+
   void createPolyline() {
     myPolyline.add(
       Polyline(
@@ -61,13 +84,14 @@ class _UserRideViewState extends State<UserRideView> {
 
   bool _isLoading = false;
   bool _onGoing = false;
+
   @override
   void initState() {
     super.initState();
     callMe();
     setState(() {
-      default1 = widget.current;
-      default2 = widget.destination;
+      default1 = LatLng(widget.current.first, widget.current.last);
+      default2 = LatLng(widget.destination.first, widget.destination.last);
     });
     createPolyline();
   }
@@ -81,21 +105,100 @@ class _UserRideViewState extends State<UserRideView> {
 
   @override
   Widget build(BuildContext context) {
-    bool isPortrait =
-        MediaQuery.of(context).orientation == Orientation.portrait;
-    double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
+    var height = MediaQuery.of(context).size.height;
+    var width = MediaQuery.of(context).size.width;
 
     return Scaffold(
 //      appBar: AppBar(automaticallyImplyLeading: true,),
       body: _isLoading == false
           ? Center(child: CircularProgressIndicator())
           : Column(
-        children: [
-          _tripMap(height, width),
-          _tripCard(height, width, widget.currentDriver),
-        ],
-      ),
+              children: [
+                _tripMap(height, width),
+                _tripCard(height, width),
+//                Container(
+//                  height: height * 0.45,
+//                  width: width,
+//                  color: KWhiteColor,
+//                  child: Expanded(
+//                    child: Container(
+//                      margin: EdgeInsets.all(20.0),
+//                      decoration: BoxDecoration(
+//                        borderRadius: BorderRadius.circular(15),
+//                        color: Colors.white,
+//                        boxShadow: [
+//                          BoxShadow(
+//                              color: Colors.black26,
+//                              offset: Offset(5, 5),
+//                              blurRadius: 3,
+//                              spreadRadius: 1.5),
+//                          BoxShadow(
+//                              color: Colors.black26,
+//                              offset: Offset(-1, 0),
+//                              blurRadius: 3,
+//                              spreadRadius: 1.5),
+//                        ],
+//                      ),
+//                      child: Column(
+//                        children: [
+//                          _driverInfo(width),
+//                          Expanded(
+//                            child: customTimeLine(
+//                                Colors.greenAccent.shade400,
+//                                Icons.location_searching,
+//                                widget.currentAddress,
+//                                true,
+//                                false),
+//                          ),
+//                          Expanded(
+//                            child: customTimeLine(
+//                                Colors.red,
+//                                Icons.location_on_rounded,
+//                                widget.destinationAddress,
+//                                false,
+//                                true),
+//                          ),
+//                          Expanded(
+//                            child: Padding(
+//                              padding:
+//                                  const EdgeInsets.symmetric(horizontal: 10),
+//                              child: Row(
+//                                mainAxisAlignment:
+//                                    MainAxisAlignment.spaceBetween,
+//                                children: [
+//                                  Expanded(
+//                                    child: Image.asset(
+//                                      'assets/images/icons/staticCar.png',
+//                                    ),
+//                                  ),
+//                                  Expanded(
+//                                    child: Row(
+//                                      mainAxisAlignment: MainAxisAlignment.end,
+//                                      children: [
+//                                        _tripInfo(
+//                                            'المسافة', '${widget.distance} KM'),
+//                                        SizedBox(
+//                                          width: 15,
+//                                        ),
+//                                        _tripInfo(
+//                                            'السعر', '${widget.price / 2} LE'),
+//                                      ],
+//                                    ),
+//                                  ),
+//                                ],
+//                              ),
+//                            ),
+//                          ),
+//                          Expanded(
+//                            child: _goToTripButton(height),
+//                          ),
+//                        ],
+//                      ),
+//                    ),
+//                  ),
+//                ),
+              ],
+            ),
     );
   }
 
@@ -110,14 +213,16 @@ class _UserRideViewState extends State<UserRideView> {
             markers: {
               Marker(
                 markerId: MarkerId('1'),
-                position: widget.current,
+                position: LatLng(widget.current.first, widget.current.last),
               ),
               Marker(
                 markerId: MarkerId('2'),
-                position: widget.destination,
+                position:
+                    LatLng(widget.destination.first, widget.destination.last),
               )
             },
-            initialCameraPosition: CameraPosition(target: _initialcameraposition),
+            initialCameraPosition: CameraPosition(
+                target: LatLng(widget.current.first, widget.current.last)),
             mapType: MapType.normal,
             onMapCreated: _onMapCreated,
             myLocationEnabled: false,
@@ -139,21 +244,19 @@ class _UserRideViewState extends State<UserRideView> {
                     BoxShadow(
                         color: Colors.indigo,
                         offset: Offset(1, 1),
-                        blurRadius: 5
-                    ),
+                        blurRadius: 5),
                     BoxShadow(
                         color: Colors.indigo,
                         offset: Offset(-1, 1),
-                        blurRadius: 5
-                    ),
+                        blurRadius: 5),
                   ],
                 ),
                 child: Center(
                   child: InkWell(
-                    onTap: ()=> Navigator.of(context).pop(_onGoing),
+                    onTap: () => Navigator.of(context).pop(_onGoing),
                     child: Icon(
                       Icons.close,
-                      color: KBorderColor,
+                      color: KGradientColor,
                     ),
                   ),
                 ),
@@ -163,29 +266,30 @@ class _UserRideViewState extends State<UserRideView> {
                 children: [
                   Container(
                     height: 40,
-                    width: width*0.7,
+                    width: width * 0.7,
                     margin: EdgeInsets.symmetric(horizontal: 10),
                     decoration: BoxDecoration(
                       color: Colors.grey.shade200,
                       borderRadius: BorderRadius.circular(25),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.indigo,
-                          offset: Offset(1, 1),
-                          blurRadius: 5
-                        ),
+                            color: Colors.indigo,
+                            offset: Offset(1, 1),
+                            blurRadius: 5),
                         BoxShadow(
                             color: Colors.indigo,
                             offset: Offset(-1, 1),
-                            blurRadius: 5
-                        ),
+                            blurRadius: 5),
                       ],
                     ),
                     child: Center(
-                      child: Text('الرحلة المشتركة الحالية', style: TextStyle(
-                        color: KBorderColor,
-                        fontSize: 16,
-                      ),),
+                      child: Text(
+                        'الرحلة المشتركة الحالية',
+                        style: TextStyle(
+                          color: KBorderColor,
+                          fontSize: 16,
+                        ),
+                      ),
                     ),
                   ),
                 ],
@@ -197,7 +301,7 @@ class _UserRideViewState extends State<UserRideView> {
     );
   }
 
-  Container _tripCard(double height, double width, DriverModel driverInfo) {
+  Container _tripCard(double height, double width) {
     return Container(
       height: height * 0.45,
       width: width,
@@ -223,7 +327,7 @@ class _UserRideViewState extends State<UserRideView> {
           ),
           child: Column(
             children: [
-              _driverInfo(width, driverInfo),
+              _driverInfo(width),
               Expanded(
                 child: customTimeLine(
                     Colors.greenAccent.shade400,
@@ -251,11 +355,11 @@ class _UserRideViewState extends State<UserRideView> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            _tripInfo('المسافة', '5 KM'),
+                            _tripInfo('المسافة', '${widget.distance} KM'),
                             SizedBox(
                               width: 15,
                             ),
-                            _tripInfo('السعر', '${driverInfo.price/2} LE'),
+                            _tripInfo('السعر', '${widget.price / 2} LE'),
                           ],
                         ),
                       ),
@@ -305,8 +409,7 @@ class _UserRideViewState extends State<UserRideView> {
             _onGoing = true;
           });
           Toast.show('تم الطلب بنجاح انتظر السيارة', context,
-              duration: Toast.LENGTH_LONG,
-              gravity: Toast.CENTER);
+              duration: Toast.LENGTH_LONG, gravity: Toast.CENTER);
         }
       },
       child: Container(
@@ -329,25 +432,7 @@ class _UserRideViewState extends State<UserRideView> {
     );
   }
 
-  Expanded _customShowDialogButton(
-      Color color, String buttonTitle, Function onClick) {
-    return Expanded(
-      child: RaisedButton(
-        color: color,
-        onPressed: onClick,
-        child: Text(
-          buttonTitle,
-          style: TextStyle(
-            color: KWhiteColor,
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Container _driverInfo(double width, DriverModel driverInfo) {
+  Container _driverInfo(double width) {
     return Container(
       height: 70,
       width: width,
@@ -363,7 +448,7 @@ class _UserRideViewState extends State<UserRideView> {
         child: Row(
           children: [
             CircleAvatar(
-              backgroundImage: NetworkImage(widget.currentDriver.image),
+              backgroundImage: NetworkImage(widget.driverProfileImage),
               radius: 30,
             ),
             SizedBox(width: 10),
@@ -372,7 +457,7 @@ class _UserRideViewState extends State<UserRideView> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Text(
-                  widget.currentDriver.name,
+                  widget.name,
                   style: TextStyle(
                     color: KBlackColor,
                     fontWeight: FontWeight.bold,
@@ -380,7 +465,7 @@ class _UserRideViewState extends State<UserRideView> {
                   ),
                 ),
                 Text(
-                  widget.currentDriver.rating,
+                  widget.rating,
                   style: TextStyle(
                     fontSize: 16,
                   ),
@@ -404,7 +489,7 @@ class _UserRideViewState extends State<UserRideView> {
               ),
               child: InkWell(
                 onTap: () async {
-                  await launch(('tel:${driverInfo.phoneNumber}'));
+                  await launch(('tel:${widget.phone}'));
                 },
                 child: Icon(
                   Icons.phone,

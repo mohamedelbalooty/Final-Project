@@ -1,114 +1,108 @@
+import 'package:final_project/app_approach/controller/auth_service.dart';
+import 'package:final_project/provider/authentication_result.dart';
+import 'package:final_project/provider/modalHud.dart';
 import 'package:final_project/widgets/shared_view_widgets/customAuthenticationButton.dart';
+import 'package:final_project/widgets/shared_view_widgets/customLogo.dart';
+import 'package:final_project/widgets/shared_view_widgets/customTextField.dart';
 import 'package:final_project/widgets/shared_view_widgets/customWallpaper.dart';
 import 'package:flutter/material.dart';
 import 'package:final_project/constants.dart';
 import 'package:final_project/widgets/shared_view_widgets/customBackground.dart';
 import 'package:final_project/widgets/shared_view_widgets/customAuthenticationQuestion.dart';
+import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:provider/provider.dart';
 import 'driver_home_navigation.dart';
-import 'driver_profile_view.dart';
 import 'driver_signUp_view.dart';
 
+// ignore: must_be_immutable
 class DriverSignInView extends StatelessWidget {
   static String id = 'DriverSignInView';
-  final email = TextEditingController();
-  final password = TextEditingController();
+  String _email, _password;
+  final GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
-    bool isPortrait =
-        MediaQuery.of(context).orientation == Orientation.portrait;
+    var height = MediaQuery.of(context).size.height;
+    var width = MediaQuery.of(context).size.width;
+    var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
     return Stack(
       children: [
         customWallpaper(height, width),
         Scaffold(
-          backgroundColor: KMainColor,
-          body: SingleChildScrollView(
-            child: Column(
-              children: [
-                customBackground(isPortrait, height, width, 'Asset 8'),
-                SizedBox(
-                  height: height * 0.09,
+          backgroundColor: Colors.transparent,
+          body: ModalProgressHUD(
+            inAsyncCall: Provider.of<ModalHud>(context).isLoading,
+            child: SingleChildScrollView(
+              child: Form(
+                key: _globalKey,
+                child: Column(
+                  children: [
+                    customBackground(isPortrait, height, width, 'Asset 8'),
+                    SizedBox(height: 15),
+                    customLogo(),
+                    SizedBox(height: 15),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Column(
+                        children: [
+                          CustomTextField(
+                            icon: Icons.email,
+                            label: 'البريد الالكتروني',
+                            onClick: (value) {
+                              _email = value;
+                            },
+                          ),
+                          CustomTextField(
+                            icon: Icons.lock_outline,
+                            label: 'كلمة المرور',
+                            onClick: (value) {
+                              _password = value;
+                            },
+                          ),
+                          InkWell(
+                            onTap: () {
+                              Navigator.pushNamed(
+                                  context, DriverHomeNavigation.id);
+                            },
+                            child: customAuthenticationButton(
+                              width,
+                              'تسجيل الدخول',
+                              [Colors.deepOrangeAccent, KGradientColor],
+                              () {
+                                _validate(context);
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    customAuthenticationQuestion(context, 'لا تمتلك حساب ؟',
+                        'أنشاء حساب جديد', DriverSignUpView.id)
+                  ],
                 ),
-                Inputs(
-                  icon: Icons.email,
-                  inputType: 'البريد الالكتروني',
-                  controllerType: email,
-                  txtType: TextInputType.emailAddress,
-                ),
-                Inputs(
-                  icon: Icons.lock_outline,
-                  inputType: 'كلمة المرور',
-                  controllerType: password,
-                  txtType: TextInputType.visiblePassword,
-                ),
-                InkWell(
-                  onTap: () {
-                    Navigator.pushNamed(context, DriverHomeNavigation.id);
-                  },
-                  child: customAuthenticationButton(
-                    width,
-                    'تسجيل الدخول',
-                    [Colors.deepOrangeAccent, KGradientColor],
-                    () {
-                      Navigator.pushReplacementNamed(
-                          context, DriverHomeNavigation.id);
-                    },
-                  ),
-                ),
-                customAuthenticationQuestion(context, 'لا تمتلك حساب ؟',
-                    'أنشاء حساب جديد', DriverSignUpView.id)
-              ],
+              ),
             ),
           ),
         ),
       ],
     );
   }
-}
 
-//TextField
-class Inputs extends StatelessWidget {
-  final TextInputType txtType;
-  final IconData icon;
-  final String inputType;
-  final controllerType;
-
-  Inputs({this.icon, this.inputType, this.controllerType, this.txtType});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 50.0,
-      width: MediaQuery.of(context).size.width,
-      margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-      child: TextField(
-        textDirection: TextDirection.rtl,
-        keyboardType: txtType,
-        style: TextStyle(
-          color: KOrangeColor,
-        ),
-        decoration: InputDecoration(
-          focusedBorder: OutlineInputBorder(
-            borderSide: const BorderSide(color: KOrangeColor, width: 1.5),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderSide: const BorderSide(color: KOrangeColor, width: 1.5),
-          ),
-          suffixIcon: Icon(
-            icon,
-            color: KOrangeColor,
-          ),
-          labelText: '$inputType',
-          labelStyle: TextStyle(
-            color: KOrangeColor,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        controller: controllerType,
-        onSubmitted: (_) => null,
-      ),
-    );
+  void _validate(context) async {
+    final modalHud = Provider.of<ModalHud>(context, listen: false);
+    modalHud.isChanging(true);
+    if (_globalKey.currentState.validate()) {
+      _globalKey.currentState.save();
+      _globalKey.currentState.reset();
+      Provider.of<AuthenticationResult>(context, listen: false)
+          .savingEmail(_email);
+      await Auth().signIn(_email, _password, context).then((value) {
+        if (value != null) {
+          Navigator.pushNamed(context, DriverHomeNavigation.id);
+        }
+      });
+      modalHud.isChanging(false);
+    }
+    modalHud.isChanging(false);
   }
 }

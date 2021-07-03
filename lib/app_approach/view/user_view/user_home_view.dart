@@ -1,37 +1,39 @@
 import 'dart:collection';
 import 'package:final_project/constants.dart';
 import 'package:final_project/provider/addRides.dart';
+import 'package:final_project/provider/onClick.dart';
 import 'package:final_project/widgets/user_view_widgets/alertShowDialog.dart';
-import 'package:final_project/widgets/user_view_widgets/billingShowDialog.dart';
 import 'package:final_project/widgets/user_view_widgets/destinationDetails.dart';
+import 'package:final_project/widgets/user_view_widgets/driversBottomSheet.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UserHomeView extends StatefulWidget {
   static String id = 'UserHomeView';
+  final String uId;
+
+  // ignore: sort_constructors_first
+  UserHomeView({@required this.uId});
 
   @override
   _UserHomeViewState createState() => _UserHomeViewState();
 }
 
 class _UserHomeViewState extends State<UserHomeView> {
-  MapType _currentMapType = MapType.normal;
-
-  void _onMapTypeButtonPressed() {
-    setState(() {
-      _currentMapType =
-          _currentMapType == MapType.normal ? MapType.hybrid : MapType.normal;
-    });
-  }
-
   String _currentAddress = '';
   String _destinationAddress = '';
-  LatLng currentLatLng;
-  LatLng destinationLatLng;
-  bool _isLoading = false;
+  LatLng _currentLatLng;
+  LatLng _destinationLatLng;
+  var _currentLatitude,
+      _currentLongitude,
+      _destinationLatitude,
+      _destinationLongitude;
+  double distance;
+//  bool _isLoading = false;
   final _markers = HashSet<Marker>();
   final LatLng _initialCameraPosition = LatLng(20.5937, 78.9629);
   GoogleMapController _controller;
@@ -58,9 +60,9 @@ class _UserHomeViewState extends State<UserHomeView> {
         ),
       );
       setState(() {
-        currentLatLng = LatLng(l.latitude, l.longitude);
-//        _latitude = l.latitude;
-//        _longitude = l.longitude;
+        _currentLatLng = LatLng(l.latitude, l.longitude);
+        _currentLatitude = l.latitude;
+        _currentLongitude = l.longitude;
       });
       await _getAddress(l.latitude, l.longitude);
       setState(() {
@@ -73,33 +75,25 @@ class _UserHomeViewState extends State<UserHomeView> {
       });
     });
   }
-
-  Future callMe() async {
-    await Future.delayed(Duration(seconds: 5));
-    setState(() {
-      _isLoading = true;
-    });
-  }
-
   @override
   void initState() {
     super.initState();
-    callMe();
+    setUserId();
+  }
+  setUserId() async{
+    SharedPreferences _userPrefs = await SharedPreferences.getInstance();
+    _userPrefs.setString('userId', widget.uId);
   }
 
-  bool onClick = false;
 
   @override
   Widget build(BuildContext context) {
-    bool isPortrait =
-        MediaQuery.of(context).orientation == Orientation.portrait;
-    double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
-//    final onClickProvider = Provider.of<OnClick>(context);
+    var height = MediaQuery.of(context).size.height;
+    var width = MediaQuery.of(context).size.width;
     return Scaffold(
-      drawer: Drawer(),
       appBar: AppBar(
         centerTitle: true,
+        automaticallyImplyLeading: false,
         backgroundColor: KGradientColor,
         title: Text(
           'توصيلة هوم',
@@ -114,9 +108,7 @@ class _UserHomeViewState extends State<UserHomeView> {
         width: width,
         child: Stack(
           children: [
-            _isLoading == false
-                ? Center(child: CircularProgressIndicator())
-                : Container(
+            Container(
                     height: MediaQuery.of(context).size.height,
                     width: MediaQuery.of(context).size.width,
                     child: Stack(
@@ -135,7 +127,9 @@ class _UserHomeViewState extends State<UserHomeView> {
                                       currentLatLng.longitude),
                                 ),
                               );
-                              destinationLatLng = currentLatLng;
+                              _destinationLatLng = currentLatLng;
+                              _destinationLatitude = currentLatLng.latitude;
+                              _destinationLongitude = currentLatLng.longitude;
                               _destinationAddress =
                                   '${placeMark[0].country} ${placeMark[0].administrativeArea} ${placeMark[0].locality}';
                               _zoomValue = 10.0;
@@ -162,9 +156,17 @@ class _UserHomeViewState extends State<UserHomeView> {
     );
   }
 
+  void getDistance() async {
+    var distanceInMeters = await Geolocator().distanceBetween(_currentLatitude,
+        _currentLongitude, _destinationLatitude, _destinationLongitude);
+    setState(() {
+      distance = distanceInMeters;
+    });
+  }
+
   Container _customMapDetails(double height, double width) {
     return Container(
-      height: onClick != true ? height * 0.1 : height * 0.19,
+      height: Provider.of<OnClick>(context, listen: false).click != true ? height * 0.1 : height * 0.19,
       width: width,
       margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
       decoration: BoxDecoration(
@@ -180,10 +182,10 @@ class _UserHomeViewState extends State<UserHomeView> {
       ),
       child: Column(
         children: [
-          destinationDetails(height, width, 'من ', _currentAddress,
+          destinationDetails(height, width, _currentAddress,
               Icons.location_on_outlined, Colors.green),
-          onClick
-              ? destinationDetails(height, width, 'إلى ', _destinationAddress,
+          Provider.of<OnClick>(context, listen: false).click == true
+              ? destinationDetails(height, width, _destinationAddress,
                   Icons.add_location_alt_outlined, Colors.red)
               : Container(),
         ],
@@ -197,23 +199,30 @@ class _UserHomeViewState extends State<UserHomeView> {
       right: 20,
       left: 20,
       child: InkWell(
-        onTap: () {
+        onTap: () async {
+          var onclick = Provider.of<OnClick>(context, listen: false);
           var addRide = Provider.of<AddRides>(context, listen: false);
-          if (onClick != true &&
+          if (onclick.click != true &&
               _destinationAddress == '' &&
               addRide.addingRide != true) {
-            alertShowDialog(width, context, 'يرجى تحديد وجهتك');
-          } else if (onClick != true &&
+            await alertShowDialog(width, context, 'يرجى تحديد وجهتك');
+          } else if (onclick.click != true &&
               _destinationAddress != '' &&
               addRide.addingRide != true) {
-            setState(() {
-              onClick = true;
-            });
-          } else if (onClick == true &&
+            onclick.isChanging(true);
+          } else if (onclick.click == true &&
               _destinationAddress != '' &&
               addRide.addingRide != true) {
-            billingShowDialog(height, width, context, currentLatLng,
-                destinationLatLng, _currentAddress, _destinationAddress);
+            await getDistance();
+            await driversBottomSheet(
+                context,
+                height,
+                width,
+                _currentLatLng,
+                _destinationLatLng,
+                distance,
+                _currentAddress,
+                _destinationAddress);
           } else {
             alertShowDialog(width, context, 'الرحلة قائمة الان');
           }
@@ -224,7 +233,7 @@ class _UserHomeViewState extends State<UserHomeView> {
           margin: EdgeInsets.only(bottom: 10.0),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5.0),
-            color: onClick != true ? KGradientColor : KOrangeColor,
+            color: Provider.of<OnClick>(context, listen: false).click != true ? KGradientColor : KOrangeColor,
             boxShadow: [
               BoxShadow(
                 color: Colors.black26,
@@ -235,7 +244,7 @@ class _UserHomeViewState extends State<UserHomeView> {
           ),
           child: Center(
             child: Text(
-              onClick != true ? 'حدد وجهتك' : 'تأكيد المكان',
+              Provider.of<OnClick>(context, listen: false).click != true ? 'حدد وجهتك' : 'تأكيد المكان',
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 22,

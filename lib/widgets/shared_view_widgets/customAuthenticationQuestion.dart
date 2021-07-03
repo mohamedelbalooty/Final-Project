@@ -8,18 +8,6 @@ Widget customAuthenticationQuestion(
     child: Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(
-          question,
-          style: TextStyle(
-            color: KWhiteColor,
-            fontSize: 15.0,
-            fontWeight: FontWeight.w500,
-            decoration: TextDecoration.underline,
-          ),
-        ),
-        SizedBox(
-          width: 15.0,
-        ),
         InkWell(
           onTap: () {
             Navigator.pushReplacementNamed(context, screen);
@@ -31,6 +19,18 @@ Widget customAuthenticationQuestion(
               fontSize: 15.0,
               fontWeight: FontWeight.w500,
             ),
+          ),
+        ),
+        SizedBox(
+          width: 15.0,
+        ),
+        Text(
+          question,
+          style: TextStyle(
+            color: KWhiteColor,
+            fontSize: 15.0,
+            fontWeight: FontWeight.w500,
+            decoration: TextDecoration.underline,
           ),
         ),
       ],

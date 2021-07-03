@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 Container destinationDetails(
     double height,
     double width,
-    String title,
     String address,
     IconData icon,
     Color color,
@@ -34,13 +33,16 @@ Container destinationDetails(
             size: 25,
           ),
           SizedBox(width: 5),
-          Text(
-            address,
-            softWrap: true,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 16,
+          Container(
+            width: width-100.0,
+            child: Text(
+              address,
+              softWrap: true,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 16,
+              ),
             ),
           ),
         ],

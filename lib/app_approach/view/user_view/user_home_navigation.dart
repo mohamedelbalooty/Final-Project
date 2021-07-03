@@ -1,7 +1,8 @@
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
-import 'package:final_project/app_approach/view/driver_view/driver_notification_view.dart';
 import 'package:final_project/app_approach/view/user_view/user_home_view.dart';
+import 'package:final_project/provider/authentication_result.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'user_profile_view.dart';
 import 'user_sharing_rides_view.dart';
 
@@ -14,12 +15,6 @@ class UserHomeNavigation extends StatefulWidget {
 
 class _UserHomeNavigationState extends State<UserHomeNavigation> {
   final PageController _pageController = PageController();
-
-  final List<Widget> _screens = [
-    UserHomeView(),
-    UserSharingRidesView(),
-    UserProfileView(),
-  ];
 
   int _currentIndex = 0;
 
@@ -44,7 +39,11 @@ class _UserHomeNavigationState extends State<UserHomeNavigation> {
     return PageView(
       physics: NeverScrollableScrollPhysics(),
       controller: _pageController,
-      children: _screens,
+      children: [
+        UserHomeView(uId: Provider.of<AuthenticationResult>(context, listen: false).userId,),
+        UserSharingRidesView(),
+        UserProfileView(),
+      ],
     );
   }
 
@@ -66,10 +65,6 @@ class _UserHomeNavigationState extends State<UserHomeNavigation> {
                 : Icons.directions_outlined),
             title: Center(child: Text('الطرق المشتركة', style: TextStyle(fontSize: 11),)),
             activeColor: Colors.green),
-//        BottomNavyBarItem(
-//            icon: Icon(_currentIndex == 2 ? Icons.help : Icons.help_outline),
-//            title: Center(child: Text('المساعد الذكي', style: TextStyle(fontSize: 12),)),
-//            activeColor: Colors.orange),
         BottomNavyBarItem(
             icon:
                 Icon(_currentIndex == 3 ? Icons.person : Icons.person_outline),

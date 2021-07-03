@@ -1,7 +1,8 @@
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:final_project/app_approach/view/driver_view/driver_notification_view.dart';
-import 'package:final_project/life_tracking/ride_location_tracker.dart';
+import 'package:final_project/provider/authentication_result.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'driver_home_view.dart';
 import 'driver_profile_view.dart';
 
@@ -14,12 +15,6 @@ class DriverHomeNavigation extends StatefulWidget {
 
 class _DriverHomeNavigationState extends State<DriverHomeNavigation> {
   final PageController _pageController = PageController();
-
-  final List<Widget> _screens = [
-    DriverHomeView(),
-    DriverNotificationView(),
-    DriverProfileView(),
-  ];
 
   int _currentIndex = 0;
 
@@ -44,7 +39,14 @@ class _DriverHomeNavigationState extends State<DriverHomeNavigation> {
     return PageView(
       physics: NeverScrollableScrollPhysics(),
       controller: _pageController,
-      children: _screens,
+      children: [
+        DriverHomeView(),
+        DriverNotificationView(
+          driverId:
+              Provider.of<AuthenticationResult>(context, listen: false).userId,
+        ),
+        DriverProfileView()
+      ],
     );
   }
 
@@ -64,11 +66,19 @@ class _DriverHomeNavigationState extends State<DriverHomeNavigation> {
             icon: Icon(_currentIndex == 1
                 ? Icons.notifications
                 : Icons.notifications_none),
-            title: Center(child: Text('الاشعارات'),),
+            title: Center(
+              child: Text('الاشعارات'),
+            ),
             activeColor: Colors.orange),
         BottomNavyBarItem(
-            icon: Icon(_currentIndex == 2 ? Icons.person : Icons.person_outline),
-            title: Center(child: Text('الملف الشخصي', style: TextStyle(fontSize: 12),),),
+            icon:
+                Icon(_currentIndex == 2 ? Icons.person : Icons.person_outline),
+            title: Center(
+              child: Text(
+                'الملف الشخصي',
+                style: TextStyle(fontSize: 11),
+              ),
+            ),
             activeColor: Colors.indigoAccent),
       ],
     );

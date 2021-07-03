@@ -1,10 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'driver_model.dart';
 
 class RideModel {
   LatLng rideCurrent, rideDestination;
-  DriverModel currentDriver;
+  var currentDriver;
   String currentAddress, destinationAddress;
   DateTime now = DateTime.now();
   DateTime time =
@@ -20,8 +19,3 @@ class RideModel {
 //    this.time  = DateTime(),
   });
 }
-//class RidesData{
-//  List<RideModel> rides = [
-//    RideModel(currentAddress: currentAddress, destinationAddress: destinationAddress, ridePrice: ridePrice, time: time)
-//  ];
-//}

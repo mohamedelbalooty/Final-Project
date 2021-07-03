@@ -75,13 +75,16 @@ class _RideLocationTrackerState extends State<RideLocationTracker> {
       appBar: AppBar(
         centerTitle: true,
         title: Text('تتبع الطريق'),
-        leading: IconButton(
-          color: KWhiteColor,
-          icon: Icon(
-            Icons.arrow_back_ios,
+        backgroundColor: KGradientColor,
+        actions: [
+          IconButton(
+            color: KWhiteColor,
+            icon: Icon(
+              Icons.arrow_forward,
+            ),
+            onPressed: () => Navigator.of(context).pop(true),
           ),
-          onPressed: () => Navigator.of(context).pop(true),
-        ),
+        ],
       ),
       body: _isLoading != true
           ? Center(child: CircularProgressIndicator())

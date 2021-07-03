@@ -5,9 +5,9 @@ Widget customAuthenticationButton(double width, String buttonTitle, List<Color> 
   return InkWell(
     onTap: onClick,
     child: Container(
-      height: 45.0,
+      height: 50.0,
       width: width,
-      margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
+      margin: EdgeInsets.symmetric(vertical: 5.0),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: gradient,
@@ -19,7 +19,7 @@ Widget customAuthenticationButton(double width, String buttonTitle, List<Color> 
           buttonTitle,
           style: TextStyle(
             color: KWhiteColor,
-            fontSize: 16.0,
+            fontSize: 18.0,
             fontWeight: FontWeight.bold,
           ),
         ),
